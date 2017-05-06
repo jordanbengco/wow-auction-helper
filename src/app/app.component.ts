@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
+import { NewsComponent } from './components/news/news.component';
 import { AuctionService } from './services/auctions';
 import { CharacterService } from './services/character.service';
 import { ItemService } from './services/item';
