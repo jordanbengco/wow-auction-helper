@@ -118,7 +118,7 @@ export function calcCost(c, isSoldByVendor?: boolean) {
 					if (c.minCount < 1) {
 						c.minCount = 1;
 					}
-					for (let m of c.reagents) {
+					for (const m of c.reagents) {
 						try {
 							if (lists.items[m.itemID] === undefined) {
 								// console.log('Lacking item=' + m.name + ' id=' + m.itemID);
@@ -130,13 +130,7 @@ export function calcCost(c, isSoldByVendor?: boolean) {
 								m.altered = true;
 							}
 
-							matBuyout = lists.customPrices[m.itemID] !== undefined ?
-								(lists.customPrices[m.itemID]) :
-								lists.auctions[m.itemID] !== undefined ?
-									lists.auctions[m.itemID].buyout : user.apiToUse === 'tsm' ?
-										lists.tsm[m.itemID] ?
-											lists.tsm[m.itemID].MarketValue : 0 :
-											0;
+							matBuyout = getCorrectBuyValue(m, isSoldByVendor);
 							/*
 							if (lists.items[m.itemID] !== undefined &&
 								lists.items[m.itemID].itemSource.sourceType === 'CREATED_BY_SPELL') {

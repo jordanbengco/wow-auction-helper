@@ -171,8 +171,12 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 		this.updateCraftingCost(recipe);
 	}
 
+	calculateCosts(recipe: any): void {
+		recipe.cost = 5000;
+	}
+
 	updateCraftingCost(recipe) {
-		calcCost(recipe);
+		calcCost(recipe, this.soldByVendor(recipe));
 		recipe.reagents.forEach(reagent => {
 			if (reagent.createdBy !== undefined && lists.recipes[lists.recipesIndex[reagent.createdBy]] === undefined) {
 				delete reagent.createdBy;
@@ -411,6 +415,24 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 		}
 	}
 
+	/**
+	 * Checks if an item probably is sold by a vendor
+	 * @param  {Item} item
+	 * @return {boolean}
+	 */
+	soldByVendor(item: any): boolean {
+		return lists.items[item.itemID] && !lists.items[item.itemID].isDropped && lists.items[item.itemID].buyPrice > 0 ?
+			true : false;
+	}
+
+	/**
+	 * Checks if an item probably is sold by a vendor
+	 * @param  {Item} item
+	 * @return {number}
+	 */
+	getVendorBuyPrice(item: any): number {
+		return lists.items[item.itemID].buyPrice;
+	}
 	/**
 	 * Checks if an item is @ AH or not.
 	 * @param  {string}  itemID

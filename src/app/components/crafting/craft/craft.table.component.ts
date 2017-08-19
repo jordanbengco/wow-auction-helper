@@ -23,6 +23,8 @@ export class CraftTableComponent {
 	@Input() pageEvent: PageEvent;
 	@Input() percentOf: Function;
 	@Input() openMenu: Function;
+	@Input() getVendorBuyPrice: Function;
+	@Input() soldByVendor: Function;
 	@Input() sortProfitBy: string;
 	@Output() addToCart = new EventEmitter();
 	@Output() removeFromCart = new EventEmitter();
@@ -30,5 +32,9 @@ export class CraftTableComponent {
 
 	isAtAH(itemID: string): boolean {
 		return lists.auctions[itemID] !== undefined ? true : false;
+	}
+
+	getItemInfo(): void {
+		console.log('Not yet implemented');
 	}
 }

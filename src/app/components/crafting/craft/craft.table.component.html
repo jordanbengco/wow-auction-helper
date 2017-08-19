@@ -55,8 +55,8 @@
 						rel="item={{ m.itemID }}"
 						href="https://{{ user.region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{m.itemID}}"
 							target="_blank">{{m.name}}</a>
-		
-					{{ getMinPrice(m.itemID) | gold }} ({{ getAuctionItem(m.itemID).quantity_total }} @ AH)
+					{{ soldByVendor(m) }}
+					{{ ( soldByVendor(m) ? getVendorBuyPrice(m) : getMinPrice(m.itemID) ) | gold }} ({{ getAuctionItem(m.itemID).quantity_total }} @ AH)
 					<i *ngIf="m.useCraftedBy !== undefined"
 						class="glyphicon glyphicon-piggy-bank"
 						[ngClass]="{'using-manual-craft': m.useCraftedBy, 'not-using-manual-craft': !m.useCraftedBy}"
@@ -69,7 +69,8 @@
 					<div class="clearfix" *ngFor="let subMats of getSubMaterials(m)" [ngClass]="{'not-found': !isAtAH(subMats.itemID)}">
 						{{ subMats.count * m.count }} x
 						<a rel="item={{ subMats.itemID }}" href="https://{{ user.region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{subMats.itemID}}"
-						  target="_blank">{{subMats.name}}</a> {{ getMinPrice(subMats.itemID) | gold }} ({{ getAuction(subMats.itemID).quantity_total
+						  target="_blank">{{subMats.name}}</a>
+						  {{ ( soldByVendor(subMats) ? getVendorBuyPrice(subMats) : getMinPrice(subMats.itemID) ) | gold }} ({{ getAuction(subMats.itemID).quantity_total
 						}} @ AH)
 						<i *ngIf="m.useCraftedBy !== undefined" class="glyphicon glyphicon-piggy-bank" [ngClass]="{'using-manual-craft': m.useCraftedBy, 'not-using-manual-craft': !m.useCraftedBy}"
 						  (click)="setManualCraft(m, craft)" aria-hidden="true"></i>
