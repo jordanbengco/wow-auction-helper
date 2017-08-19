@@ -172,11 +172,26 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 	}
 
 	calculateCosts(recipe: any): void {
-		recipe.cost = 5000;
+		recipe.cost = 0;
+		recipe.buyout = 0;
+		recipe.profit = 0;
+		recipe.estDemand = 0;
+
+		recipe.reagents.forEach( r => {
+			if (lists.customPrices[r.itemID]) {
+				recipe.cost += parseInt(r.count, 10) * lists.customPrices[r.itemID];
+			} else if (this.soldByVendor(r)) {
+				recipe.cost += parseInt(r.count, 10) * lists.items[r.itemID].buyPrice;
+			} else {
+				recipe.cost += parseInt(r.count, 10) * lists.auctions[r.itemID].buyout;
+			}
+		});
 	}
 
 	updateCraftingCost(recipe) {
-		calcCost(recipe, this.soldByVendor(recipe));
+		// calcCost(recipe, this.soldByVendor(recipe));
+		this.calculateCosts(recipe);
+
 		recipe.reagents.forEach(reagent => {
 			if (reagent.createdBy !== undefined && lists.recipes[lists.recipesIndex[reagent.createdBy]] === undefined) {
 				delete reagent.createdBy;
