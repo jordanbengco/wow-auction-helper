@@ -172,20 +172,47 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 	}
 
 	calculateCosts(recipe: any): void {
-		recipe.cost = 0;
-		recipe.buyout = 0;
-		recipe.profit = 0;
+		recipe['cost'] = 0;
+		recipe['buyout'] = lists.auctions[recipe.itemID] ? lists.auctions[recipe.itemID].buyout : 0;
+		recipe['profit'] = 0;
+
+		// Data from the API
 		recipe.estDemand = 0;
+		if (user.apiToUse === 'tsm') {
+			recipe.mktPrice = lists.tsm[recipe.itemID] !== undefined ?
+				lists.tsm[recipe.itemID]['MarketValue'] : 0;
+				recipe.estDemand = lists.tsm[recipe.itemID] !== undefined ?
+				Math.round(lists.tsm[recipe.itemID]['RegionSaleRate'] * 100) : 0;
+		} else if (user.apiToUse === 'wowuction') {
+			recipe.mktPrice = lists.tsm[recipe.itemID] !== undefined ?
+				lists.wowuction[recipe.itemID]['mktPrice'] : 0;
+				recipe.estDemand = lists.wowuction[recipe.itemID] !== undefined ?
+				Math.round(lists.wowuction[recipe.itemID]['estDemand'] * 100) : 0;
+		}
 
 		recipe.reagents.forEach( r => {
 			if (lists.customPrices[r.itemID]) {
 				recipe.cost += parseInt(r.count, 10) * lists.customPrices[r.itemID];
 			} else if (this.soldByVendor(r)) {
 				recipe.cost += parseInt(r.count, 10) * lists.items[r.itemID].buyPrice;
+			} else if (!lists.auctions[r.itemID]) {
+				// In case of items not being found @ AH
+				recipe.cost += 0;
 			} else {
 				recipe.cost += parseInt(r.count, 10) * lists.auctions[r.itemID].buyout;
 			}
 		});
+
+		// Defining the profit
+		if (user.apiToUse !== 'none' &&
+			(Math.round(lists.auctions[recipe.itemID].buyout / lists.auctions[recipe.itemID].mktPrice)
+			* 100) >= user.buyoutLimit) {
+			recipe.profit = lists.auctions[recipe.itemID].mktPrice - recipe.cost;
+		} else {
+			recipe.profit = lists.auctions[recipe.itemID].buyout - recipe.cost;
+		}
+		console.log(recipe, lists.auctions[recipe.itemID].buyout,  lists.auctions[recipe.itemID].mktPrice
+		, user.buyoutLimit);
 	}
 
 	updateCraftingCost(recipe) {

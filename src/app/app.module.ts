@@ -47,7 +47,7 @@ import { GoldPipe } from './pipes/gold.pipe';
 		FormsModule,
 		ReactiveFormsModule,
 		HttpModule,
-        HttpClientModule,
+		HttpClientModule,
 		MaterialModule,
 		RouterModule.forRoot([
 			{
