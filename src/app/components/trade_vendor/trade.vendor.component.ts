@@ -316,12 +316,12 @@ export class TradeVendorComponent extends ParentAuctionComponent implements OnIn
   }
 
   ngOnInit(): void {
-    if (lists.auctions !== undefined && lists.auctions.length > 0) {
+    if (lists.auctions !== undefined && Object.keys(lists.auctions).length > 0) {
       this.setValues();
     } else {
-      let refreshId = setInterval(() => {
+      const refreshId = setInterval(() => {
         try {
-          if (!lists.isDownloading && lists.auctions.length > 0) {
+          if (!lists.isDownloading && Object.keys(lists.auctions).length > 0) {
             this.setValues();
             clearInterval(refreshId);
           }

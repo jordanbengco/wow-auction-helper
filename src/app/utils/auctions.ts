@@ -1,3 +1,4 @@
+import { AuctionItem } from './../models/auction-item';
 import { lists } from './globals';
 import Crafting from './crafting';
 import { Notification } from './notification';
@@ -62,6 +63,7 @@ export default class Auction {
     return auctionService.getAuctions(this.url, this.lastModified)
       .then(a => {
         this.buildAuctionArray(a.auctions, router);
+        console.log(lists.auctions);
       }).catch(error => {
         lists.isDownloading = false;
         console.log('Could not download auctions at this time', error);
@@ -70,7 +72,10 @@ export default class Auction {
 
   public static buildAuctionArray(arr: any[], router: Router) {
     let undercuttedAuctions = 0;
-    const list = [], itemsBelowVendor = { quantity: 0, totalValue: 0 };
+    const list = new Map<number, AuctionItem>(),
+      itemsBelowVendor = {
+        quantity: 0, totalValue: 0
+      };
 
     lists.myAuctions = [];
     for (const o of arr) {

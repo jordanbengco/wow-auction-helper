@@ -108,7 +108,7 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 
 		const refreshId = setInterval(() => {
 			try {
-				if (!lists.isDownloading && lists.auctions.length > 0) {
+				if (!lists.isDownloading && Object.keys(lists.auctions).length > 0) {
 					this.setShoppingCartCost();
 					clearInterval(refreshId);
 				}
@@ -155,7 +155,7 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 
 			const refreshId = setInterval(() => {
 				try {
-					if (!lists.isDownloading && lists.auctions.length > 0 && !this.isInitiated) {
+					if (!lists.isDownloading && Object.keys(lists.auctions).length > 0 && !this.isInitiated) {
 						this.isInitiated = true;
 						this.filterRecipes();
 						clearInterval(refreshId);

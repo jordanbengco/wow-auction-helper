@@ -1,14 +1,16 @@
+import { TSMItem } from './../models/tsm-item';
 import { IUser } from './interfaces';
 import { itemClasses, watchlist } from './objects';
 import { User } from 'app/models/user';
 import { CharacterService } from 'app/services/character.service';
+import { AuctionItem } from 'app/models/auction-item';
 
 export let lists = {
 	isDownloading: true,
 	myAuctions: [],
-	auctions: [],
+	auctions: new Map<number, AuctionItem>(),
 	wowuction: [],
-	tsm: [],
+	tsm: new Map<number, TSMItem>(),
 	items: {},
 	itemsArray: [],
 	itemRecipes: {},
