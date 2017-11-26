@@ -98,7 +98,7 @@
         [pageSizeOptions]="page.pageSizeOptions" [pageIndex]="pageEvent.pageIndex" (page)="changePage($event)">
       </mat-paginator>
       <div class="col-md-9">
-        <app-craft-table *ngIf="!isDisenchating; else disenchantTable" [pageEvent]="pageEvent" [user]="user" [crafts]="crafts" [atAH]="isAtAh"
+        <app-craft-table *ngIf="!isDisenchating; else disenchantTable" [pageEvent]="pageEvent" [user]="user()" [crafts]="crafts" [atAH]="isAtAh"
           [getIcon]="getIcon" [getName]="getName" [getProfitPercent]="getProfitPercent" [getMinPrice]="getMinPrice" [percentOf]="percentOf"
           [getAuctionItem]="getAuctionItem" [sortProfitBy]="sortProfitBy" [openMenu]="openMenu" (addToCart)="addToCart($event)"
           [getApiItem]="getApiItem">
@@ -122,7 +122,7 @@
                 <div>
                   <span xmlns="http://www.w3.org/1999/xhtml" class="icon-frame frame-36 align-left" [style.background-image]="'url('+ getIcon(craft) +')'"></span>
                   <div class="align-left col-md-9">
-                    <a rel="item={{ craft.itemID }}" href="https://{{ user.region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{ craft.itemID }}"
+                    <a rel="item={{ craft.itemID }}" href="https://{{ user().region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{ craft.itemID }}"
                       target="_blank">
                       {{ craft.name }}</a>
                     <br> {{ craft.profession }} ({{ getAuctionItem(craft.itemID).quantity_total }} @ AH)
@@ -133,7 +133,7 @@
                 <div class="clearfix" *ngFor="let m of craft.reagents" [ngClass]="{'not-found': !isAtAH(m.itemID)}">
                   <span *ngIf="m.useCraftedBy === undefined || !m.useCraftedBy">
                     {{ m.count }} x
-                    <a rel="item={{ m.itemID }}" href="https://{{ user.region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{m.itemID}}"
+                    <a rel="item={{ m.itemID }}" href="https://{{ user().region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{m.itemID}}"
                       target="_blank">{{m.name}}</a>
 
                     {{ getMinPrice(m.itemID) | gold }} ({{ getAuctionItem(m.itemID).quantity_total }} @ AH)
@@ -145,7 +145,7 @@
                   <div *ngIf="m.useCraftedBy !== undefined && m.useCraftedBy">
                     <div class="clearfix" *ngFor="let subMats of getSubMaterials(m)" [ngClass]="{'not-found': !isAtAH(subMats.itemID)}">
                       {{ subMats.count * m.count }} x
-                      <a rel="item={{ subMats.itemID }}" href="https://{{ user.region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{subMats.itemID}}"
+                      <a rel="item={{ subMats.itemID }}" href="https://{{ user().region }}.battle.net/wow/en/vault/character/auction/browse?reverse=false&sort=unitBuyout&itemId={{subMats.itemID}}"
                         target="_blank">{{subMats.name}}</a>
                       {{ getMinPrice(subMats.itemID) | gold }} ({{ getAuctionItem(subMats.itemID).quantity_total }} @ AH)
                       <i *ngIf="m.useCraftedBy !== undefined" class="fa fa-bank" [ngClass]="{'using-manual-craft': m.useCraftedBy, 'not-using-manual-craft': !m.useCraftedBy}"
@@ -196,7 +196,7 @@
           <mat-card-content>
             Buyout: {{ getMinPrice(Disenchanting.materials[Disenchanting.selected].id) | gold }}
             <br>
-            <div *ngIf="user.apiTouse !== 'none'">
+            <div *ngIf="user().apiTouse !== 'none'">
               Market value: {{ getAuctionItem(Disenchanting.materials[Disenchanting.selected].id).mktPrice | gold }}
               <br> Region sale avg: {{ getApiItem( Disenchanting .materials[Disenchanting.selected].id) .regionSaleAvg | gold
               }}
@@ -206,7 +206,7 @@
           </mat-card-content>
         </mat-card>
 
-        <app-shopping-cart [shoppingCart]="shoppingCart" [user]="user" [getMinPrice]="getMinPrice" (removeFromCart)="removeFromCart($event)"
+        <app-shopping-cart [shoppingCart]="shoppingCart" [user]="user()" [getMinPrice]="getMinPrice" (removeFromCart)="removeFromCart($event)"
           (clearCart)="clearCart()">
         </app-shopping-cart>
       </div>

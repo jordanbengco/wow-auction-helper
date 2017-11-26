@@ -104,7 +104,7 @@ export default class Auction {
       } else if (CharacterService.user.apiToUse === 'tsm' && lists.tsm[o.item] !== undefined) {
         try {
           o['estDemand'] = Math.round(lists.tsm[o.item]['RegionSaleRate'] * 100) || 0;
-          o['avgDailySold'] = parseFloat(lists.tsm[o.item]['RegionAvgDailySold']) || 0;
+          o['avgDailySold'] = lists.tsm[o.item]['RegionAvgDailySold'] || 0;
           o['avgDailyPosted'] = Math.round(
             (parseFloat(lists.tsm[o.item]['RegionAvgDailySold']) / parseFloat(lists.tsm[o.item]['RegionSaleRate'])) * 100) / 100 || 0;
           o['mktPrice'] = lists.tsm[o.item]['MarketValue'] || 0;
@@ -116,7 +116,7 @@ export default class Auction {
 
       } else {
         o['estDemand'] = 0;
-        o['avgDailySold'] = 0;
+        o['avgDailySold'] = 33;
         o['avgDailyPosted'] = 0;
         o['mktPrice'] = 0;
       }

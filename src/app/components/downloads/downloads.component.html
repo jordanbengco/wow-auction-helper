@@ -18,7 +18,7 @@
     </div>
     <button class="btn btn-sm btn-default col-md-4" (click)="downloadItems()">
       <i class="fa fa-spinner loading" *ngIf="getDownloading().items" aria-hidden="true"></i>
-      Download now
+      Update
     </button>
   </div>
   <div class="row col-md-12 mb-2">
@@ -27,7 +27,7 @@
     </div>
     <button class="btn btn-sm btn-default col-md-4" (click)="downloadPets()">
       <i class="fa fa-spinner loading" *ngIf="getDownloading().pets" aria-hidden="true"></i>
-      Download now
+      Update
     </button>
   </div>
   <div class="row col-md-12 mb-2">
@@ -36,7 +36,7 @@
     </div>
     <button class="btn btn-sm btn-default col-md-4" (click)="donloadRecipes()">
       <i class="fa fa-spinner loading" *ngIf="getDownloading().recipes" aria-hidden="true"></i>
-      Download now
+      Update
     </button>
   </div>
   <div class="row col-md-12 mb-2">
@@ -45,7 +45,7 @@
     </div>
     <button class="btn btn-sm btn-default col-md-4" (click)="downloadAuctions(true)">
       <i class="fa fa-spinner loading" *ngIf="getDownloading().auctions" aria-hidden="true"></i>
-      Download now
+      Update
     </button>
   </div>
   <div class="row col-md-12 mb-2" *ngIf="useTSM()">
@@ -54,7 +54,7 @@
     </div>
     <button class="btn btn-sm btn-default col-md-4" (click)="downloadTSM(true)">
       <i class="fa fa-spinner loading" *ngIf="getDownloading().api" aria-hidden="true"></i>
-      Download now
+      Update
     </button>
   </div>
 </div>

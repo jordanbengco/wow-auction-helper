@@ -85,10 +85,10 @@
       {{ craft.cost | gold }}
     </td>
     <td class="hidden-xs">
-      <span *ngIf="user.apiToUse === 'tsm' || user.apiToUse === 'wowuction'">
+      <span *ngIf="user.apiToUse !== 'none'">
         Live:
       </span> {{ craft.buyout | gold }}
-      <span *ngIf="user.apiToUse === 'tsm' || user.apiToUse === 'wowuction'">
+      <span *ngIf="user.apiToUse !== 'none'">
         ({{ percentOf(craft.mktPrice, craft.buyout) }}% mkt)
         <br>Market value: {{ getApiItem(craft.itemID).mktPrice | gold }}
         <br>Region sale avg: {{ getApiItem(craft.itemID).regionSaleAvg | gold }}
@@ -101,12 +101,13 @@
     </td>
     <td *ngIf="user.apiToUse !== 'none'" class="hidden-xs">
       <span *ngIf="user.apiToUse === 'wowuctions'">
-        {{ getApiItem(craft.itemID) .avgDailyPosted }}
+        {{ getApiItem(craft.itemID).avgDailyPosted }}
         <br>
-      </span> {{ getApiItem(craft.itemID) .avgDailySold }}
+      </span> 
+      {{ getAuctionItem(craft.itemID) | json }}
     </td>
     <td *ngIf="user.apiToUse !== 'none'" class="hidden-xs">
-      {{ getApiItem(craft.itemID) .estDemand | percent }}
+      {{ getApiItem(craft.itemID).estDemand | percent }}
     </td>
     <td>
       <a class="fa fa-shopping-cart push-left" aria-hidden="true" (click)="openMenu(i)">Add</a>
