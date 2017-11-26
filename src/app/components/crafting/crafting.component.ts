@@ -11,6 +11,7 @@ import { Disenchanting } from '../../utils/disenchanting';
 import { FileService } from '../../services/file.service';
 import Crafting from '../../utils/crafting';
 import { CharacterService } from 'app/services/character.service';
+import { User } from 'app/models/user';
 
 declare const ga: Function;
 @Component({
@@ -121,11 +122,11 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 	getApiItem(itemID: string) {
 		if (CharacterService.user.apiToUse === 'tsm' && lists.tsm[itemID]) {
 			return {
-				estDemand: lists.tsm[itemID].RegionSaleRate,
-				regionSaleAvg: lists.tsm[itemID].RegionSaleAvg,
-				avgDailySold: lists.tsm[itemID].RegionAvgDailySold,
+				estDemand: lists.tsm[itemID] ? lists.tsm[itemID].RegionSaleRate : 0,
+				regionSaleAvg: lists.tsm[itemID] ? lists.tsm[itemID].RegionSaleAvg : 0,
+				avgDailySold: lists.tsm[itemID] ? lists.tsm[itemID].RegionAvgDailySold : 0,
 				avgDailyPosted: 0,
-				mktPrice: lists.tsm[itemID].MarketValue
+				mktPrice: lists.tsm[itemID] ? lists.tsm[itemID].MarketValue : 0
 			};
 		} else if (CharacterService.user.apiToUse === 'wowuction' && lists.wowuction[itemID]) {
 			// return lists.wowuction[itemID];
