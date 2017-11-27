@@ -104,7 +104,7 @@
         {{ getApiItem(craft.itemID).avgDailyPosted }}
         <br>
       </span> 
-      {{ getAuctionItem(craft.itemID) | json }}
+      {{ getAuctionItem(craft.itemID).avgDailySold }}
     </td>
     <td *ngIf="user.apiToUse !== 'none'" class="hidden-xs">
       {{ getApiItem(craft.itemID).estDemand | percent }}
