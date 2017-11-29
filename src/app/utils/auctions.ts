@@ -9,6 +9,7 @@ import { GoldPipe } from '../pipes/gold.pipe';
 import Pets from './pets';
 import { CharacterService } from 'app/services/character.service';
 import { db } from 'app/utils/database';
+import { TSMItem } from 'app/models/tsm-item';
 
 export default class Auction {
   private static url: string;
@@ -51,8 +52,8 @@ export default class Auction {
   public static downloadTSM(auctionService: AuctionService): Promise<any> {
     return auctionService.getTSMData()
       .then(r => {
-        r.forEach(i => {
-          lists.tsm[i.Id] = i;
+        r.forEach(i => {console.log('tsm');
+          lists.tsm[i.Id] = i as TSMItem;
         });
       })
       .catch(e =>
@@ -71,6 +72,7 @@ export default class Auction {
   }
 
   public static buildAuctionArray(arr: any[], router: Router) {
+    console.log(CharacterService.user, lists.tsm);
     let undercuttedAuctions = 0;
     const list = new Map<number, AuctionItem>(),
       itemsBelowVendor = {
@@ -100,41 +102,16 @@ export default class Auction {
         }
       } catch (e) { console.log(e); }
 
-      if (CharacterService.user.apiToUse === 'wowuction' && lists.wowuction[o.item] !== undefined) {
-        o['estDemand'] = Math.round(lists.wowuction[o.item]['estDemand'] * 100) || 0;
-        o['avgDailySold'] = parseFloat(lists.wowuction[o.item]['avgDailySold']) || 0;
-        o['avgDailyPosted'] = parseFloat(lists.wowuction[o.item]['avgDailyPosted']) || 0;
-        o['mktPrice'] = lists.wowuction[o.item]['mktPrice'] || 0;
-
-      } else if (CharacterService.user.apiToUse === 'tsm' && lists.tsm[o.item] !== undefined) {
-        try {
-          o['estDemand'] = Math.round(lists.tsm[o.item]['RegionSaleRate'] * 100) || 0;
-          o['avgDailySold'] = lists.tsm[o.item]['RegionAvgDailySold'] || 0;
-          o['avgDailyPosted'] = Math.round(
-            (parseFloat(lists.tsm[o.item]['RegionAvgDailySold']) / parseFloat(lists.tsm[o.item]['RegionSaleRate'])) * 100) / 100 || 0;
-          o['mktPrice'] = lists.tsm[o.item]['MarketValue'] || 0;
-          o['regionSaleAvg'] = lists.tsm[o.item].RegionSaleAvg;
-          o['vendorSell'] = lists.tsm[o.item].VendorSell;
-        } catch (err) {
-          console.log(err);
-        }
-
-      } else {
-        o['estDemand'] = 0;
-        o['avgDailySold'] = 33;
-        o['avgDailyPosted'] = 0;
-        o['mktPrice'] = 0;
-      }
+      this.setApiData(o);
 
       if (list[o.item] !== undefined) {
-
-        list[o.item]['auctions'].push({
+        list[o.item].auctions.push({
           item: o.item, name: o.name, petSpeciesId: o.petSpeciesId,
           owner: o.owner, ownerRealm: o.ownerRealm,
           buyout: o.buyout, quantity: o.quantity,
           bid: o.bid, timeLeft: o.timeLeft
         });
-        list[o.item]['quantity_total'] += o['quantity'];
+        list[o.item].quantity_total += o['quantity'];
 
         if (list[o.item]['buyout'] > o['buyout'] / o['quantity']) {
 
@@ -199,6 +176,15 @@ export default class Auction {
     lists.auctions = list;
     Crafting.getCraftingCosts(router);
     lists.isDownloading = false;
+  }
+
+  private static setApiData(a: AuctionItem) {
+    a.estDemand = lists.tsm[a.item] ? Math.round(lists.tsm[a.item].RegionSaleRate * 100) : 0;
+    a.avgDailySold = lists.tsm[a.item] ? lists.tsm[a.item].RegionAvgDailySold : 0;
+    a.avgDailyPosted = 0;
+    a.mktPrice = lists.tsm[a.item] ? lists.tsm[a.item].MarketValue : 0;
+    a.regionSaleAvg = lists.tsm[a.item] ? lists.tsm[a.item].RegionSaleAvg : 0; // Avg sale price
+    a.vendorSell = lists.items[a.item] ? lists.items[a.item].sellPrice : 0;
   }
 
   private static getItemName(auction): string {

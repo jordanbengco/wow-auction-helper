@@ -123,16 +123,12 @@
                 <br>Region sale avg: {{ auc.regionSaleAvg | gold }}
               </span>
             </td>
-            <td *ngIf="apiToUse !== 'none'" class="hidden-xs">
-              <span *ngIf="auc.petAuctions !== undefined; else show">
+            <td *ngIf="user().apiToUse !== 'none'" class="hidden-xs">
+              <span *ngIf="auc.petAuctions !== undefined; else showAvgDailySold">
                 Not available for battle pets
               </span>
-              <ng-template #show>
-                <span *ngIf="apiToUse === 'wowuctions'">
-                  {{ auc.avgDailyPosted }}
-                  <br>
-                </span>
-                {{ auc.avgDailySold }}
+              <ng-template #showAvgDailySold>
+                <span>{{ auc.avgDailySold }}</span>
               </ng-template>
             </td>
             <td *ngIf="apiToUse !== 'none'" class="hidden-xs">

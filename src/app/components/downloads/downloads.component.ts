@@ -74,9 +74,13 @@ export class DownloadsComponent implements OnInit {
         } else if(this.useTSM()) {
           await db.table('tsm').toArray().then(
             result => {
-              result.forEach(r => {
-                lists.tsm[r.Id] = r;
-              });
+              if (result.length > 0) {
+                result.forEach(r => {
+                  lists.tsm[r.Id] = r;
+                });
+              } else {
+                this.downloadTSM(false);
+              }
             });
         console.log('Loaded TSM from local DB');
         }

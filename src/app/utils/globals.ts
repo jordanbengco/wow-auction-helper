@@ -4,6 +4,7 @@ import { itemClasses, watchlist } from './objects';
 import { User } from 'app/models/user';
 import { CharacterService } from 'app/services/character.service';
 import { AuctionItem } from 'app/models/auction-item';
+import { ItemDTO } from 'app/models/item';
 
 export let lists = {
 	isDownloading: true,
@@ -11,7 +12,7 @@ export let lists = {
 	auctions: new Map<number, AuctionItem>(),
 	wowuction: [],
 	tsm: new Map<number, TSMItem>(),
-	items: {},
+	items: new Map<number, ItemDTO>(),
 	itemsArray: [],
 	itemRecipes: {},
 	pets: [],

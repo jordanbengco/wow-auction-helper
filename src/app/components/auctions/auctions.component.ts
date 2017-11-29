@@ -13,6 +13,7 @@ import Pets from '../../utils/pets';
 import { IUser, IAuction } from '../../utils/interfaces';
 import { itemClasses } from '../../utils/objects';
 import { FileService } from '../../services/file.service';
+import { AuctionItem } from 'app/models/auction-item';
 
 declare const ga: Function;
 @Component({
@@ -27,7 +28,7 @@ export class AuctionComponent extends ParentAuctionComponent implements OnInit{
 	// Objects and arrays
 	itemClasses = {'classes': []};
 	selectedItem = {'name': 'No item selected', 'auctions': []};
-	filteredAuctions = [];
+	filteredAuctions: AuctionItem[] = [];
 
 	private filter = { 'itemClass': '-1', 'itemSubClass': '-1' };
 	private hasLoaded = false;
@@ -38,7 +39,6 @@ export class AuctionComponent extends ParentAuctionComponent implements OnInit{
 		private auctionService: AuctionService, private itemService: ItemService,
 		private formBuilder: FormBuilder, public exportFile: FileService) {
 		super();
-		this.filteredAuctions = lists.auctions;
 		this.itemClasses = itemClasses;
 		const filter = JSON.parse(localStorage.getItem('query_auctions')) || undefined;
 
@@ -58,12 +58,12 @@ export class AuctionComponent extends ParentAuctionComponent implements OnInit{
 	}
 
 	ngOnInit(): void {
-		if (lists.auctions !== undefined && lists.auctions.length > 0) {
+		if (lists.auctions !== undefined && Object.keys(lists.auctions).length > 0) {
 			this.filterAuctions();
 		} else {
 			const refreshId = setInterval(() => {
 				try {
-					if (!lists.isDownloading && lists.auctions.length > 0) {
+					if (!lists.isDownloading && Object.keys(lists.auctions).length > 0) {
 						this.filterAuctions();
 						clearInterval(refreshId);
 					}

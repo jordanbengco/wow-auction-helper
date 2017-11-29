@@ -2,6 +2,7 @@ import { lists } from './globals';
 import { ItemService } from '../services/item.service';
 import Dexie from 'dexie';
 import { db } from 'app/utils/database';
+import { ItemDTO } from 'app/models/item';
 
 export class Item {
 
@@ -67,7 +68,7 @@ export class Item {
 
 	public static buildItemArray(arr) {
 		if (lists.items === undefined) {
-			lists.items = [];
+			lists.items = new Map<number, ItemDTO>();
 		}
 
 		for (const i of arr) {
