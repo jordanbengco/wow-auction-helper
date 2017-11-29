@@ -71,7 +71,7 @@ export class DownloadsComponent implements OnInit {
         if (new Date(localStorage.getItem('timestamp_tsm')).toDateString() !== new Date().toDateString()) {
           await this.downloadTSM(false);
           console.log('TSM done');
-        } else if(this.useTSM()) {
+        } else if (this.useTSM()) {
           await db.table('tsm').toArray().then(
             result => {
               if (result.length > 0) {
@@ -85,7 +85,7 @@ export class DownloadsComponent implements OnInit {
         console.log('Loaded TSM from local DB');
         }
       }
-      
+
       await this.donloadRecipes();
 
       await this.downloadPets();
@@ -165,7 +165,7 @@ export class DownloadsComponent implements OnInit {
   }
 
   getTimestamp(type: string): any {
-    return localStorage[`timestamp_${type}`]
+    return localStorage[`timestamp_${type}`];
   }
 
   donloadRecipes(): void {

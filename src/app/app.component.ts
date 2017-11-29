@@ -97,13 +97,13 @@ export class AppComponent implements OnInit {
   addToContextList(o): void {
     switch (o.context) {
       case 0:
-        this.allItemSources[o.context] = 'Drop'
+        this.allItemSources[o.context] = 'Drop';
         break;
       case 1:
-        this.allItemSources[o.context] = 'World drop'
+        this.allItemSources[o.context] = 'World drop';
         break;
       case 2:
-        this.allItemSources[o.context] = 'Raid (old)'
+        this.allItemSources[o.context] = 'Raid (old)';
         break;
       case 3:
         this.allItemSources[o.context] = 'Normal dungeon';

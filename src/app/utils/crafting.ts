@@ -30,7 +30,7 @@ export default class Crafting {
 	public static getCraftingCosts(router: Router): void {
 		let potentialProfit = 0;
 		console.log('starting crafting cost calc');
-		for (let c of lists.recipes) {
+		for (const c of lists.recipes) {
 			this.calcCost(c);
 			if (c.profit > 0) {
 				potentialProfit += c.profit;

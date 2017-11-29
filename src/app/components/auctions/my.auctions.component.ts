@@ -33,7 +33,7 @@ export class MyAuctionsComponent extends ParentAuctionComponent {
 	 */
 	getAuctionOwner(itemID: string): string {
 		return lists.auctions[itemID].owner;
-	};
+	}
 
 
 	/**

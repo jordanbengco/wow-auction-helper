@@ -14,7 +14,7 @@ export const testObjects = {
 		]},
 		{ 'spellID': 2153, 'profession': 'Leatherworking', 'itemID': 2303, 'name': 'Handstitched Leather Pants', 'minCount': '1', 'maxCount': '1', 'reagents': [
 			{ 'itemID': 2318, 'name': 'Light Leather', 'count': 4 }, { 'itemID': 2320, 'name': 'Coarse Thread', 'count': 1 }] },
-		{ 'spellID': 2158, 'profession': 'Leatherworking', 'itemID': 2307, 'name': 'Fine Leather Boots', 'minCount': '1', 'maxCount': '1', 'reagents': 
+		{ 'spellID': 2158, 'profession': 'Leatherworking', 'itemID': 2307, 'name': 'Fine Leather Boots', 'minCount': '1', 'maxCount': '1', 'reagents':
 		[{ 'itemID': 2318, 'name': 'Light Leather', 'count': 7 }, { 'itemID': 2320, 'name': 'Coarse Thread', 'count': 2 }] },
 		{ 'spellID': 2159, 'profession': 'Leatherworking', 'itemID': 2308, 'name': 'Fine Leather Cloak', 'minCount': '1', 'maxCount': '1', 'reagents': [{ 'itemID': 2318, 'name': 'Light Leather', 'count': 10 }, { 'itemID': 2321, 'name': 'Fine Thread', 'count': 2 }] },
 		{ 'spellID': 2160, 'profession': 'Leatherworking', 'itemID': 2300, 'name': 'Embossed Leather Vest', 'minCount': '1', 'maxCount': '1', 'reagents': [{ 'itemID': 2318, 'name': 'Light Leather', 'count': 8 }, { 'itemID': 2320, 'name': 'Coarse Thread', 'count': 4 }] },

@@ -449,7 +449,7 @@ export class CraftingComponent extends ParentAuctionComponent implements OnInit 
 	 */
 	getProfitPercent(profit: number, buyout: number): number {
 		return Math.round((profit / buyout) * 100);
-	};
+	}
 
 	/**
 	 * Gets thre auction item for an item

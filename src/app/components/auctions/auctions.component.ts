@@ -23,7 +23,7 @@ declare const ga: Function;
 	providers: [AuctionService, ItemService]
 })
 
-export class AuctionComponent extends ParentAuctionComponent implements OnInit{
+export class AuctionComponent extends ParentAuctionComponent implements OnInit {
 
 	// Objects and arrays
 	itemClasses = {'classes': []};
@@ -81,7 +81,7 @@ export class AuctionComponent extends ParentAuctionComponent implements OnInit{
 	 */
 	getPet(speciesId: number) {
 		return Pets.getPet(speciesId);
-	};
+	}
 
 	/**
 	 * Retrieves the description of a item

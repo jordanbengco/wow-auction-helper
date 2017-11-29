@@ -113,5 +113,5 @@ export class AuctionService {
       console.log('Using local files');
     }
     return window.location.hostname === 'localhost_' ? localUrl : apiUrl;
-  };
+  }
 }

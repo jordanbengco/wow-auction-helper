@@ -1,6 +1,6 @@
 export class Notification {
-		isUpdateAvailable: boolean = true;
-		isBelowVendorSell: boolean =  true;
-		isUndercutted: boolean =  true;
-		isWatchlist: boolean =  true;
+		isUpdateAvailable = true;
+		isBelowVendorSell =  true;
+		isUndercutted =  true;
+		isWatchlist =  true;
 }

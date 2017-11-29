@@ -1,19 +1,19 @@
-import { Notification } from "app/models/notification";
-import { CharacterService } from "app/services/character.service";
-import { lists } from "app/utils/globals";
-import { Watchlist } from "app/models/watchlist";
-import { watchlist } from "app/utils/objects";
+import { Notification } from 'app/models/notification';
+import { CharacterService } from 'app/services/character.service';
+import { lists } from 'app/utils/globals';
+import { Watchlist } from 'app/models/watchlist';
+import { watchlist } from 'app/utils/objects';
 
 export class User {
   region: string;
 	realm: string;
-	character: string = '';
+	character = '';
 	characters: any[] = [];
 	apiWoWu?: string;
 	apiTsm?: string;
 	customPrices?: any;
-	apiToUse: string = 'none';
-	buyoutLimit: number = 200;
+	apiToUse = 'none';
+	buyoutLimit = 200;
 	crafters: any[];
 	notifications: Notification = {
 		isUpdateAvailable: true,
@@ -22,10 +22,10 @@ export class User {
 		isWatchlist: true
   };
 	watchlist: Watchlist = watchlist;
-	isDarkMode: boolean = true;
+	isDarkMode = true;
 
   /**
-   * 
+   *
    * @param object JSON string exported from the application
    */
   public static import(object: string) {
@@ -34,7 +34,7 @@ export class User {
 
   public static save(user: User): void {
     Object.keys(user).forEach(key => {
-      switch(key) {
+      switch (key) {
         case 'region':
           localStorage['region'] = user[key];
           CharacterService.user.region = user[key];
@@ -79,14 +79,14 @@ export class User {
     });
 
     if (user.realm && user.region) {
-      this.updateRecipesForRealm();  
-    } 
+      this.updateRecipesForRealm();
+    }
   }
 
   public static restore(): void {
-    let user: User = new User();
+    const user: User = new User();
     Object.keys(localStorage).forEach(key => {
-      switch(key) {
+      switch (key) {
         case 'region':
           user.region = localStorage[key];
           break;
@@ -122,8 +122,8 @@ export class User {
 
     CharacterService.user = user;
     if (user.realm && user.region) {
-      this.updateRecipesForRealm();  
-    }  
+      this.updateRecipesForRealm();
+    }
   }
 
   public static delete(): void {
@@ -168,5 +168,5 @@ export class User {
         });
       });
     }
-  };
+  }
 }

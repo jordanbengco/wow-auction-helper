@@ -3,7 +3,7 @@ import { User } from 'app/models/user';
 import { CharacterService } from 'app/services/character.service';
 
 beforeEach(() => {
-  
+
 });
 
 afterEach(() => {
@@ -13,19 +13,19 @@ afterEach(() => {
 });
 
 describe('User', () => {
-  describe('import', () =>{
+  describe('import', () => {
     it('should be able to import', () => {
       User.import(JSON.stringify({
         realm: 'test-realm',
         region: 'us',
         buyoutLimit: 300
       }));
-  
+
       expect(localStorage['crafting_buyout_limit']).toEqual('300');
       expect(CharacterService.user.buyoutLimit).toEqual(300);
     });
   });
-  
+
   describe('restore', () => {
     it('Should accept work only if just region and realm are set', () => {
       localStorage['realm'] = 'test-realm';
@@ -34,12 +34,12 @@ describe('User', () => {
       expect(CharacterService.user.realm).toEqual('test-realm');
       expect(CharacterService.user.region).toEqual('eu');
     });
-  
+
     it('Has default values', () => {
       User.restore();
       expect(CharacterService.user.buyoutLimit).toEqual(200);
     });
-  
+
     it('Can override default values', () => {
       localStorage['crafting_buyout_limit'] = '300';
       User.restore();

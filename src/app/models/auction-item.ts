@@ -1,17 +1,17 @@
 export class AuctionItem {
     item: number;
     petSpeciesId: number;
-    name: string = 'Unavailable';
+    name = 'Unavailable';
     owner: string;
     ownerRealm: string;
     auctions: Auction[];
-    estDemand: number = 0;
-    avgDailySold: number = 0;
-    avgDailyPosted: number = 0;
-    regionSaleAvg: number = 0;
-    mktPrice: number = 0;
-    vendorSell: number = 0;
-    quantityTotal: number = 0;
+    estDemand = 0;
+    avgDailySold = 0;
+    avgDailyPosted = 0;
+    regionSaleAvg = 0;
+    mktPrice = 0;
+    vendorSell = 0;
+    quantityTotal = 0;
 }
 
 class Auction {

@@ -132,5 +132,5 @@ export class ItemService {
 		}
 
 		return window.location.hostname === 'localhost' ? localUrl : apiUrl;
-	};
+	}
 }

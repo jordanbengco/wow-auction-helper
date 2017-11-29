@@ -123,7 +123,7 @@ export class SettingsComponent implements OnInit {
       await Auctions.downloadTSM(this.auctionService)
         .then(r => DownloadsComponent.downloading.api = false)
         .catch(e => DownloadsComponent.downloading.api = false);
-      
+
       DownloadsComponent.downloading.auctions = true;
       await Auctions.download(this.auctionService, this.router)
         .then(r => DownloadsComponent.downloading.auctions = false)

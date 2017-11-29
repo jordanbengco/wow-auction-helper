@@ -1,4 +1,4 @@
-import { Spell } from "app/models/spell";
+import { Spell } from 'app/models/spell';
 
 export class ItemSpells {
     spellId: number;

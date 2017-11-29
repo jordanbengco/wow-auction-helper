@@ -1,4 +1,4 @@
-import { ItemSpells } from "app/models/itemspells";
+import { ItemSpells } from 'app/models/itemspells';
 
 export class ItemDTO {
     id: string;
