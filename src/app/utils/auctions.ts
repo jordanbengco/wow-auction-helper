@@ -7,11 +7,11 @@ import { AuctionService } from '../services/auctions.service';
 import { ItemService } from '../services/item.service';
 import { GoldPipe } from '../pipes/gold.pipe';
 import Pets from './pets';
-import { CharacterService } from 'app/services/character.service';
-import { db } from 'app/utils/database';
-import { TSMItem } from 'app/models/tsm-item';
+import { TSMItem } from '../models/tsm-item';
+import { Database } from './database';
+import { CharacterService } from '../services/character.service';
 
-export default class Auction {
+export  class Auctions {
   private static url: string;
   private static lastModified: number;
   private static updateAvailable: boolean;
@@ -35,7 +35,7 @@ export default class Auction {
     lists.isDownloading = true;
     console.log('Downloading auctions');
     if (forceUpdate || !this.updateAvailable) {
-      return db.table('auctions').toArray().then(
+      return Database.db.table('auctions').toArray().then(
         result => {
           if (result.length > 0) {
             this.buildAuctionArray(result, router);
@@ -145,7 +145,9 @@ export default class Auction {
         }
       }
       // Gathering data for auctions below vendor price
-      if (CharacterService.user.notifications.isBelowVendorSell && lists.items[o.item] !== undefined && o.buyout < lists.items[o.item].sellPrice) {
+      if (CharacterService.user.notifications.isBelowVendorSell &&
+          lists.items[o.item] !== undefined &&
+          o.buyout < lists.items[o.item].sellPrice) {
         itemsBelowVendor.quantity++;
         itemsBelowVendor.totalValue += (lists.items[o.item].sellPrice - o.buyout) * o.quantity;
       }
@@ -241,5 +243,19 @@ export default class Auction {
       }
       return 0;
     }
+  }
+
+  getCorrectBuyValue(item: any, isSoldByVendor): number {
+    let cost = 0;
+    if (lists.customPrices[item.itemID] !== undefined) {
+      cost = (lists.customPrices[item.itemID]);
+    } else if (lists.auctions[item.itemID] !== undefined) {
+      cost = lists.items[item.itemID].buyPrice;
+      // (isSoldByVendor ? lists.items[item.itemID].buyPrice :
+      // lists.auctions[item.itemID].buyout)
+    } else if (CharacterService.user.apiToUse === 'tsm' && lists.tsm[item.itemID]) {
+      cost = lists.tsm[item.itemID].MarketValue;
+    }
+    return cost;
   }
 }

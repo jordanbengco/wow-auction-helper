@@ -8,13 +8,12 @@ import { IUser } from '../../utils/interfaces';
 import { lists } from '../../utils/globals';
 import Crafting from '../../utils/crafting';
 import { Router } from '@angular/router';
-import Auctions from '../../utils/auctions';
+import { Auctions } from '../../utils/auctions';
 import { ItemService } from '../../services/item.service';
-import { DownloadsComponent } from 'app/components/downloads/downloads.component';
-import { User } from 'app/models/user';
-import { Notification } from 'app/models/notification';
-import { watchlist } from 'app/utils/objects';
-import { db } from 'app/utils/database';
+import { DownloadsComponent } from '../downloads/downloads.component';
+import { watchlist } from '../../utils/objects';
+import { Database } from '../../utils/database';
+import { User } from '../../models/user';
 
 declare const ga: Function;
 @Component({
@@ -51,21 +50,59 @@ export class SettingsComponent implements OnInit {
     private rs: RealmService, private auctionService: AuctionService,
     private characterService: CharacterService, private itemService: ItemService) {
     this.characterForm = this.formBuilder.group({
-      region: CharacterService.user.region ? CharacterService.user.region : '',
-      realm: CharacterService.user.realm ? CharacterService.user.realm : '',
-      name: CharacterService.user.character ? CharacterService.user.character : '',
-      buyoutLimit: CharacterService.user.buyoutLimit ? CharacterService.user.buyoutLimit : 0,
-      apiTsm: CharacterService.user.apiTsm ? CharacterService.user.apiTsm : '',
-      apiToUse: CharacterService.user.apiToUse ? CharacterService.user.apiToUse : '',
-      customPrices: CharacterService.user.customPrices ? CharacterService.user.customPrices : {},
+      region:
+        CharacterService.user.region ?
+          CharacterService.user.region :
+          '',
+      realm:
+        CharacterService.user.realm ?
+          CharacterService.user.realm :
+          '',
+      name:
+        CharacterService.user.character ?
+          CharacterService.user.character :
+          '',
+      buyoutLimit:
+        CharacterService.user.buyoutLimit ?
+          CharacterService.user.buyoutLimit :
+          0,
+      apiTsm:
+        CharacterService.user.apiTsm ?
+          CharacterService.user.apiTsm :
+          '',
+      apiToUse:
+        CharacterService.user.apiToUse ?
+          CharacterService.user.apiToUse :
+          '',
+      customPrices:
+        CharacterService.user.customPrices ?
+          CharacterService.user.customPrices :
+          {},
       notifications: this.formBuilder.group({
-        isUpdateAvailable: CharacterService.user.notifications.isUpdateAvailable ? CharacterService.user.notifications.isUpdateAvailable : true,
-        isBelowVendorSell: CharacterService.user.notifications.isBelowVendorSell ? CharacterService.user.notifications.isBelowVendorSell : true,
-        isUndercutted: CharacterService.user.notifications.isUndercutted ? CharacterService.user.notifications.isUndercutted : true,
-        isWatchlist: CharacterService.user.notifications.isWatchlist ? CharacterService.user.notifications.isWatchlist : true
+        isUpdateAvailable:
+          CharacterService.user.notifications.isUpdateAvailable ?
+            CharacterService.user.notifications.isUpdateAvailable :
+            true,
+        isBelowVendorSell:
+          CharacterService.user.notifications.isBelowVendorSell ?
+            CharacterService.user.notifications.isBelowVendorSell :
+            true,
+        isUndercutted:
+          CharacterService.user.notifications.isUndercutted ?
+            CharacterService.user.notifications.isUndercutted :
+            true,
+        isWatchlist: CharacterService.user.notifications.isWatchlist ?
+          CharacterService.user.notifications.isWatchlist :
+          true
       }),
-      watchlist: CharacterService.user.watchlist ? CharacterService.user.watchlist : watchlist,
-      isDarkMode: CharacterService.user.isDarkMode ? CharacterService.user.isDarkMode : false
+      watchlist:
+        CharacterService.user.watchlist ?
+          CharacterService.user.watchlist :
+          watchlist,
+      isDarkMode:
+        CharacterService.user.isDarkMode ?
+          CharacterService.user.isDarkMode :
+          false
     });
     this.customPriceForm = formBuilder.group({
       'query': ''
@@ -135,12 +172,12 @@ export class SettingsComponent implements OnInit {
         .then(r => DownloadsComponent.downloading.api = false)
         .catch(e => DownloadsComponent.downloading.api = false);
 
-      await db.table('auctions').toArray().then(a => {
+      await Database.db.table('auctions').toArray().then(a => {
         Auctions.buildAuctionArray(a, this.router);
       });
 
     } else {
-      db.table('auctions').toArray().then(a => {
+      Database.db.table('auctions').toArray().then(a => {
         Auctions.buildAuctionArray(a, this.router);
       });
     }
@@ -205,7 +242,7 @@ export class SettingsComponent implements OnInit {
   }
 
   searchDB() {
-    db.table('items')
+    Database.db.table('items')
       .where('name')
       .startsWithIgnoreCase(this.customPriceForm.value['query'])
       .limit(2)

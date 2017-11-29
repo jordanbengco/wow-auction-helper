@@ -10,9 +10,9 @@ import Push from 'push.js';
 import { Notification } from './utils/notification';
 import Crafting from './utils/crafting';
 import Pets from './utils/pets';
-import Auctions from './utils/auctions';
+import { Auctions } from './utils/auctions';
 import { Item } from './utils/item';
-import { User } from 'app/models/user';
+import { User } from './models/user';
 
 declare const ga: Function;
 
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     });
 
     try {
-			/**
+      /**
 			 * Dark mode & light mode activation
 			 */
       if (CharacterService.user.isDarkMode) {
@@ -90,7 +90,7 @@ export class AppComponent implements OnInit {
     return this.isRealmSet() && this.exists(CharacterService.user.character);
   }
 
-	/**
+  /**
 	 * Used to add item to the list of available contexts for an auction item
 	 * @param {[type]} o - Auction item
 	 */

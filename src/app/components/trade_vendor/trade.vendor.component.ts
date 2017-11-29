@@ -6,7 +6,7 @@ import { lists } from '../../utils/globals';
 
 declare const ga: Function;
 @Component({
-  selector: 'trade-vendor',
+  selector: 'app-trade-vendor',
   templateUrl: 'trade.vendor.component.html',
   styleUrls: ['../auctions/auctions.component.css']
 })

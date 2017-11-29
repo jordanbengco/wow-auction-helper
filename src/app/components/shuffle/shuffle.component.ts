@@ -7,48 +7,48 @@ import { Event } from '@angular/router';
  * This is a component designed for milling and prospecting.
  */
 @Component({
-	selector: 'app-shuffle',
-	templateUrl: './shuffle.component.html'
+  selector: 'app-shuffle',
+  templateUrl: './shuffle.component.html'
 })
 export class ShuffleComponent implements OnInit {
-	itemSearchQuery = '';
-	itemName: string;
+  itemSearchQuery = '';
+  itemName: string;
 
-	constructor() { }
+  constructor() { }
 
-	ngOnInit() {
-		// s
-	}
+  ngOnInit() {
+    // s
+  }
 
-	itemSearch(): Item[] {
-		console.log(this.itemSearchQuery);
-		if (this.itemSearchQuery.length === 0) {
-			return [];
-		}
-		return Object.keys(lists.items)
-			.filter(i => {
-				if (lists.items[i].name.toLowerCase().indexOf(this.itemSearchQuery.toLowerCase()) > -1) {
-					return lists.items[i];
-				}
-			});
-	}
+  itemSearch(): Item[] {
+    console.log(this.itemSearchQuery);
+    if (this.itemSearchQuery.length === 0) {
+      return [];
+    }
+    return Object.keys(lists.items)
+      .filter(i => {
+        if (lists.items[i].name.toLowerCase().indexOf(this.itemSearchQuery.toLowerCase()) > -1) {
+          return lists.items[i];
+        }
+      });
+  }
 
-	getItemName(id: string): string {
-		return lists.items[id].name;
-	}
+  getItemName(id: string): string {
+    return lists.items[id].name;
+  }
 
-	recieveName(event): void {
-		console.log(event);
-		this.itemName = event;
-	}
+  recieveName(event): void {
+    console.log(event);
+    this.itemName = event;
+  }
 }
 
 class Shuffle {
-	targetId: string;
-	shuffles: ShuffleItem[];
+  targetId: string;
+  shuffles: ShuffleItem[];
 }
 
 class ShuffleItem {
-	itemId: string;
-	dropChance: number;
+  itemId: string;
+  dropChance: number;
 }

@@ -37,78 +37,78 @@ import { CharactersComponent } from './components/settings/characters/characters
 import { CharacterComponent } from './components/settings/characters/character/character.component';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		FrontPageComponent,
-		AuctionComponent,
-		CraftingComponent,
-		MyAuctionsComponent,
-		TradeVendorComponent,
-		AboutComponent,
-		SettingsComponent,
-		WatchlistComponent,
-		NewsComponent,
-		ShoppingCartComponent,
-		CraftTableComponent,
-		ExportComponent,
-		SortIconComponent,
-		ShuffleComponent,
-		HeaderComponent,
-		GoldPipe,
-		AutocompleteComponent,
-		DownloadsComponent,
-		CharactersComponent,
-		CharacterComponent
-	],
-	imports: [
-		BrowserModule,
-		FormsModule,
-		ReactiveFormsModule,
-		HttpModule,
-		HttpClientModule,
-		MaterialModule,
-		RouterModule.forRoot([
-			{
-				path: '',
-				component: FrontPageComponent
-			}, {
-				path: 'auctions',
-				component: AuctionComponent
-			}, {
-				path: 'crafting',
-				component: CraftingComponent
-			}, {
-				path: 'my-auctions',
-				component: MyAuctionsComponent
-			}, {
-				path: 'trade-vendor',
-				component: TradeVendorComponent
-			}, {
-				path: 'watchlist',
-				component: WatchlistComponent
-			}, {
-				path: 'shuffle',
-				component: ShuffleComponent
-			}, {
-				path: 'about',
-				component: AboutComponent
-			}, {
-				path: 'settings',
-				component: SettingsComponent
-			}, {
-				path: 'settings/:setting',
-				component: SettingsComponent
-			}
-		])
-	],
-	providers: [
-		AuctionService,
-		CharacterService,
-		FileService,
-		ItemService,
-		RealmService,
-		Title,
-		Location],
-	bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    FrontPageComponent,
+    AuctionComponent,
+    CraftingComponent,
+    MyAuctionsComponent,
+    TradeVendorComponent,
+    AboutComponent,
+    SettingsComponent,
+    WatchlistComponent,
+    NewsComponent,
+    ShoppingCartComponent,
+    CraftTableComponent,
+    ExportComponent,
+    SortIconComponent,
+    ShuffleComponent,
+    HeaderComponent,
+    GoldPipe,
+    AutocompleteComponent,
+    DownloadsComponent,
+    CharactersComponent,
+    CharacterComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule,
+    HttpClientModule,
+    MaterialModule,
+    RouterModule.forRoot([
+      {
+        path: '',
+        component: FrontPageComponent
+      }, {
+        path: 'auctions',
+        component: AuctionComponent
+      }, {
+        path: 'crafting',
+        component: CraftingComponent
+      }, {
+        path: 'my-auctions',
+        component: MyAuctionsComponent
+      }, {
+        path: 'trade-vendor',
+        component: TradeVendorComponent
+      }, {
+        path: 'watchlist',
+        component: WatchlistComponent
+      }, {
+        path: 'shuffle',
+        component: ShuffleComponent
+      }, {
+        path: 'about',
+        component: AboutComponent
+      }, {
+        path: 'settings',
+        component: SettingsComponent
+      }, {
+        path: 'settings/:setting',
+        component: SettingsComponent
+      }
+    ])
+  ],
+  providers: [
+    AuctionService,
+    CharacterService,
+    FileService,
+    ItemService,
+    RealmService,
+    Title,
+    Location],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

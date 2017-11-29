@@ -9,39 +9,38 @@ import { AppModule } from '../../app.module';
 import { CraftingComponent } from './crafting.component';
 import { lists } from '../../utils/globals';
 import { testObjects } from '../../utils/testdata';
-import { CharacterService } from 'app/services/character.service';
-import { User } from 'app/models/user';
+import { User } from '../../models/user';
 
 
 // TODO: DO them tests!
 describe('CraftingComponent', () => {
-	let component: CraftingComponent;
-	let fixture: ComponentFixture<CraftingComponent>;
+  let component: CraftingComponent;
+  let fixture: ComponentFixture<CraftingComponent>;
 
-	beforeEach(async(() => {
-		TestBed.configureTestingModule({
-			imports: [
-				AppModule
-			],
-			providers: [{ provide: APP_BASE_HREF, useValue: '/' }]
-		})
-			.compileComponents();
-	}));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        AppModule
+      ],
+      providers: [{ provide: APP_BASE_HREF, useValue: '/' }]
+    })
+      .compileComponents();
+  }));
 
-	beforeEach(() => {
-		User.restore();
-		fixture = TestBed.createComponent(CraftingComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
+  beforeEach(() => {
+    User.restore();
+    fixture = TestBed.createComponent(CraftingComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-	it('should be created', () => {
-		expect(component).toBeTruthy();
-	});
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
 
-	it('should be able to calculate', () => {
-		const recipe = {cost: 0};
-		// component.calculateCosts(recipe);
-		expect(recipe.cost).toEqual(0);
-	});
+  it('should be able to calculate', () => {
+    const recipe = { cost: 0 };
+    // component.calculateCosts(recipe);
+    expect(recipe.cost).toEqual(0);
+  });
 });

@@ -7,9 +7,10 @@ import Dexie from 'dexie';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { User } from 'app/models/user';
-import { CharacterService } from 'app/services/character.service';
-import { db, DB_TABLES } from 'app/utils/database';
+import { User } from '../models/user';
+import { CharacterService } from './character.service';
+import { Database } from '../utils/database';
+import { chooseUrl } from './choose-url';
 
 declare var $;
 @Injectable()
@@ -24,12 +25,12 @@ export class AuctionService {
   getAuctions(url, timestamp): Promise<any> {
     url = 'http://wah.jonaskf.net/GetAuctions.php?url=' + url;
     const localUrl = '/assets/auctions.json';
-    return this.http.get(this.getUrl(url, localUrl))
+    return this.http.get(chooseUrl(url, localUrl))
       .map(response => <IAuction>function (r) {
         console.log('Loaded auctions');
         if (typeof r === 'object') {
-          db['auctions'].clear();
-          db['auctions'].bulkAdd(r['auctions']);
+          Database.db['auctions'].clear();
+          Database.db['auctions'].bulkAdd(r['auctions']);
           console.log('Done storing auctions in object store');
           localStorage.setItem('timestamp_auctions', timestamp);
         }
@@ -41,14 +42,18 @@ export class AuctionService {
 
   getWoWuctionData() {
     const localUrl = '/assets/wowuction.tsv',
-      apiUrl = 'http://www.wowuction.com/' + this.getUser().region + '/' +
-        localStorage.getItem('realm') + '/alliance/Tools/RealmDataExportGetFileStatic?token=' + this.getUser().apiWoWu,
-      url = this.getUrl(apiUrl, localUrl);
+      apiUrl = `http://www.wowuction.com/${
+          this.getUser().region
+        }/${
+          localStorage.getItem('realm')
+        }'/alliance/Tools/RealmDataExportGetFileStatic?token=${
+          this.getUser().apiWoWu
+        }`;
 
     // TODO: Make it not use the local URL by storing the value temporarily with Dexie!
-    return this.http.get(url)
+    return this.http.get(chooseUrl(apiUrl, localUrl))
       .map(res => function (r: string) {
-        db['wowuction'].clear();
+        Database.db['wowuction'].clear();
         const list = [];
         let obj = {},
           tempObj = {},
@@ -70,12 +75,12 @@ export class AuctionService {
               'estDemand': tempObj[17],
               'realm': tempObj[0]
             };
-            db['wowuction'].add(obj);
+            Database.db['wowuction'].add(obj);
             list[obj['id']] = obj;
             // db['wowuction'].add(obj);
           }
         });
-        db.table('wowuction').toArray().then(arr => { console.log('wowuction', arr); });
+        Database.db.table('wowuction').toArray().then(arr => { console.log('wowuction', arr); });
         localStorage.setItem('timestamp_wowuction', new Date().toDateString());
         return list;
       }(res['_body'].toString()));
@@ -85,16 +90,21 @@ export class AuctionService {
   getTSMData(): Promise<any> {
     // The localhost requires a json file for the realm!
     const localUrl = '/assets/tsm-emerald-dream.json',
-      apiUrl = 'http://api.tradeskillmaster.com/v1/item/'
-        + this.getUser().region + '/'
-        + this.getUser().realm
-        + '?fields=' + DB_TABLES.TSM_TABLE_COLUMNS + '&format=json&apiKey=' + this.getUser().apiTsm;
+      apiUrl = `http://api.tradeskillmaster.com/v1/item/${
+        this.getUser().region
+      }/${
+        this.getUser().realm
+      }?fields=${
+        Database.DB_TABLES.TSM_TABLE_COLUMNS
+      }&format=json&apiKey=${
+        this.getUser().apiTsm
+      }`;
 
-    return this.http.get(this.getUrl(apiUrl, localUrl))
+    return this.http.get(chooseUrl(apiUrl, localUrl))
       .map(response => <any>function (r) {
         console.log('Loaded TSM');
-        db['tsm'].clear();
-        db['tsm'].bulkAdd(r);
+        Database.db['tsm'].clear();
+        Database.db['tsm'].bulkAdd(r);
         localStorage.setItem('timestamp_tsm', new Date().toDateString());
         return r;
       }(response)).toPromise();
@@ -102,16 +112,12 @@ export class AuctionService {
 
   getLastUpdated(): Promise<any> {
     const localUrl = '/assets/GetAuctionsLastModified.json',
-      apiUrl = 'http://wah.jonaskf.net/GetAuctions.php?region='
-        + this.getUser().region + '&realm=' + this.getUser().realm + '&lastModified';
+      apiUrl = `http://wah.jonaskf.net/GetAuctions.php?region=${
+        this.getUser().region
+      }&realm=${
+        this.getUser().realm
+      }&lastModified`;
     console.log('Getting last modified for auctions');
-    return this.http.get(this.getUrl(apiUrl, localUrl)).toPromise();
-  }
-
-  getUrl(apiUrl, localUrl) {
-    if (window.location.hostname === 'localhost') {
-      console.log('Using local files');
-    }
-    return window.location.hostname === 'localhost_' ? localUrl : apiUrl;
+    return this.http.get(chooseUrl(apiUrl, localUrl)).toPromise();
   }
 }

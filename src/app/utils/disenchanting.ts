@@ -1,5 +1,5 @@
 import { lists } from './globals';
-import Auction from 'app/utils/auctions';
+import { Auctions } from './auctions';
 
 export class Disenchanting {
   disenchantables;
@@ -86,7 +86,7 @@ export class Disenchanting {
         lists.items[recipe.itemID].itemLevel <= this.materials[this.selected].maxILVL) {
 
         if (this.onlyProfitable &&
-          (Auction.getMinPrice(this.materials[this.selected].id + '') - recipe.cost) <= 0) {
+          (Auctions.getMinPrice(this.materials[this.selected].id + '') - recipe.cost) <= 0) {
           return;
         }
         this.disenchantables.push(recipe);
@@ -117,8 +117,8 @@ export class Disenchanting {
           lists.items[k].quality === this.materials[this.selected].quality &&
           lists.items[k].itemLevel >= this.materials[this.selected].minILVL) {
 
-          if (this.onlyProfitable && Auction.getMinPrice(k) > 0 &&
-            Auction.getMinPrice(this.materials[this.selected].id + '') <= Auction.getMinPrice(k)) {
+          if (this.onlyProfitable && Auctions.getMinPrice(k) > 0 &&
+          Auctions.getMinPrice(this.materials[this.selected].id + '') <= Auctions.getMinPrice(k)) {
             return;
           }
           console.log(lists.auctions[k]);

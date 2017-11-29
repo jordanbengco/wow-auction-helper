@@ -1,17 +1,15 @@
+import { Auctions } from '../../utils/auctions';
 import { Component, OnInit, Input } from '@angular/core';
-import Crafting from 'app/utils/crafting';
-import Pets from 'app/utils/pets';
-import { Item } from 'app/utils/item';
-import Auctions from 'app/utils/auctions';
-import { ItemService } from 'app/services/item.service';
-import { AuctionService } from 'app/services/auctions.service';
+import { AuctionService } from '../../services/auctions.service';
+import { CharacterService } from '../../services/character.service';
+import { ItemService } from '../../services/item.service';
 import { Router } from '@angular/router';
-import { lists } from 'app/utils/globals';
-import { Notification } from 'app/utils/notification';
-import { IUser } from 'app/utils/interfaces';
-import { CharacterService } from 'app/services/character.service';
-import { User } from 'app/models/user';
-import { db } from 'app/utils/database';
+import { lists } from '../../utils/globals';
+import { Database } from '../../utils/database';
+import { Notification } from '../../utils/notification';
+import Crafting from '../../utils/crafting';
+import Pets from '../../utils/pets';
+import { Item } from '../../utils/item';
 
 @Component({
   selector: 'app-downloads',
@@ -19,11 +17,6 @@ import { db } from 'app/utils/database';
   styleUrls: ['./downloads.component.css']
 })
 export class DownloadsComponent implements OnInit {
-  tempTimestamps = {
-    pets: new Date(),
-    recipes: new Date()
-  };
-
   public static downloading = {
     items: false,
     api: false,
@@ -31,6 +24,12 @@ export class DownloadsComponent implements OnInit {
     recipes: false,
     pets: false
   };
+
+  tempTimestamps = {
+    pets: new Date(),
+    recipes: new Date()
+  };
+
 
   private lastModified: number;
   timeSinceLastModified: number;
@@ -42,9 +41,12 @@ export class DownloadsComponent implements OnInit {
   showDropdown: boolean;
   constructor(private auctionService: AuctionService,
     private itemService: ItemService, private characterService: CharacterService,
-    private router: Router) {}
+    private router: Router) { }
 
   async ngOnInit() {
+    await Database.init()
+      .then(r => console.log('Database has successfully been started'))
+      .catch(e => console.error('Database was not started', e));
     this.date = new Date();
     if (this.isRealmSet()) {
       try {
@@ -62,29 +64,8 @@ export class DownloadsComponent implements OnInit {
       } catch (e) {
         console.log('app.component init', e);
       }
-      if (
-        this.useTSM() &&
-        localStorage.getItem('api_tsm') !== null &&
-        localStorage.getItem('api_tsm') !== undefined &&
-        localStorage.getItem('api_tsm').length > 0 &&
-        localStorage.getItem('api_tsm') !== 'null') {
-        if (new Date(localStorage.getItem('timestamp_tsm')).toDateString() !== new Date().toDateString()) {
-          await this.downloadTSM(false);
-          console.log('TSM done');
-        } else if (this.useTSM()) {
-          await db.table('tsm').toArray().then(
-            result => {
-              if (result.length > 0) {
-                result.forEach(r => {
-                  lists.tsm[r.Id] = r;
-                });
-              } else {
-                this.downloadTSM(false);
-              }
-            });
-        console.log('Loaded TSM from local DB');
-        }
-      }
+
+      await this.initAPI();
 
       await this.donloadRecipes();
 
@@ -135,9 +116,9 @@ export class DownloadsComponent implements OnInit {
         Notification.send(
           'New auction data is available!',
           `Downloading new auctions for ${
-            CharacterService.user.realm}@${
-              CharacterService.user.region}.`,
-              this.router);
+          CharacterService.user.realm}@${
+          CharacterService.user.region}.`,
+          this.router);
       }
       Auctions.download(this.auctionService, this.router);
     }
@@ -156,8 +137,8 @@ export class DownloadsComponent implements OnInit {
   }
 
   isRealmSet(): boolean {
-    return this.exists(localStorage.getItem('realm')) &&
-      this.exists(localStorage.getItem('region'));
+    return CharacterService.user.realm.length > 0 &&
+      CharacterService.user.region.length > 0;
   }
 
   isCharacterSet(): boolean {
@@ -166,6 +147,36 @@ export class DownloadsComponent implements OnInit {
 
   getTimestamp(type: string): any {
     return localStorage[`timestamp_${type}`];
+  }
+
+  initAPI(): void {
+    if (
+      this.useTSM() &&
+      localStorage.getItem('api_tsm') !== null &&
+      localStorage.getItem('api_tsm') !== undefined &&
+      localStorage.getItem('api_tsm').length > 0 &&
+      localStorage.getItem('api_tsm') !== 'null') {
+      if (new Date(
+          localStorage.getItem('timestamp_tsm'))
+            .toDateString() !== new Date().toDateString()) {
+        this.downloadTSM(false);
+        console.log('TSM done');
+      } else if (this.useTSM()) {
+        DownloadsComponent.downloading.api = true;
+        Database.db.table('tsm').toArray().then(
+          result => {
+            if (result.length > 0) {
+              result.forEach(r => {
+                lists.tsm[r.Id] = r;
+              });
+              console.log('Loaded TSM from local DB');
+            } else {
+              this.downloadTSM(false);
+            }
+            DownloadsComponent.downloading.api = false;
+          });
+      }
+    }
   }
 
   donloadRecipes(): void {
@@ -186,9 +197,9 @@ export class DownloadsComponent implements OnInit {
       }).catch(r => DownloadsComponent.downloading.pets = false);
   }
 
-  downloadItems(): void {
+  downloadItems(force?: boolean): void {
     DownloadsComponent.downloading.items = true;
-    Item.download(this.itemService)
+    Item.download(this.itemService, force)
       .then(r => DownloadsComponent.downloading.items = false)
       .catch(r => DownloadsComponent.downloading.items = false);
   }
@@ -213,7 +224,7 @@ export class DownloadsComponent implements OnInit {
       .then(tsm => {
         DownloadsComponent.downloading.api = false;
         if (rebuildAuctions) {
-          db.table('auctions').toArray().then(a => {
+          Database.db.table('auctions').toArray().then(a => {
             Auctions.buildAuctionArray(a, this.router);
           });
         }

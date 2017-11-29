@@ -2,7 +2,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { RealmService } from './../../../services/realm.service';
 import { CharacterService } from './../../../services/character.service';
 import { Component, Input, OnInit, AfterViewInit, OnChanges } from '@angular/core';
-import { User } from 'app/models/user';
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-characters',

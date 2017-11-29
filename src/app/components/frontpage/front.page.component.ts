@@ -78,7 +78,10 @@ export class FrontPageComponent implements OnInit {
   }
 
   isValid() {
-    return this.userForm.value.region && this.userForm.value.region.length > 0 && this.userForm.value.realm && this.userForm.value.realm.length > 0;
+    return this.userForm.value.region &&
+      this.userForm.value.region.length > 0 &&
+      this.userForm.value.realm &&
+      this.userForm.value.realm.length > 0;
   }
 
   getRealmValue(realm): void {
