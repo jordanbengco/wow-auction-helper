@@ -6,6 +6,7 @@ import { CraftingService } from './services/crafting.service';
 import { AuctionsService } from './services/auctions.service';
 import { ItemService } from './services/item.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
+import { ItemBonus } from './models/item/item-bonuses';
 
 @Component({
   selector: 'wah-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
     angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
     User.restore();
     SharedService.user.shoppingCart.restore();
+    ItemBonus.init();
   }
 
   ngOnInit(): void {

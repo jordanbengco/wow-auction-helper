@@ -16,6 +16,7 @@ import { Seller } from '../models/seller';
 import { AuctionPet } from '../models/auction/auction-pet';
 import { ShoppingCart } from '../models/shopping-cart';
 import { Notification } from '../models/user/notification';
+import { ItemBonus } from '../models/item/item-bonuses';
 
 @Injectable()
 export class SharedService {
@@ -39,6 +40,7 @@ export class SharedService {
   public static recipesMapPerItemKnown: Map<number, Recipe> = new Map<number, Recipe>();
   public static itemRecipeMap: Map<number, Array<Recipe>> = new Map<number, Array<Recipe>>();
 
+  public static  bonusIDMap: Map<number, ItemBonus> = new Map<number, ItemBonus>();
   public static items: Map<number, Item> = new Map<number, Item>();
   public static itemsUnmapped: Array<Item> = new Array<Item>();
   public static tradeVendorItemMap: Map<number, TradeVendorItemValue> = new Map<number, TradeVendorItemValue>();

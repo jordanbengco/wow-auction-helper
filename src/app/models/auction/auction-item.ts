@@ -1,9 +1,11 @@
 import { Auction } from './auction';
+import { ItemBonus } from '../item/item-bonuses';
 
 export class AuctionItem {
   itemID: number;
   petSpeciesId?: number;
   name = 'Unavailable';
+  bonusIDs: Array<ItemBonus> = new Array<ItemBonus>();
   buyout = 0;
   bid = 0;
   owner: string;
