@@ -21,6 +21,7 @@ export class MarketResetComponent implements OnInit {
   checkInterval;
   tsmShoppingString = '';
   pipe = new GoldPipe();
+  hasDefinedAPI: boolean;
 
   sum = {
     sumCost: 0,
@@ -34,8 +35,8 @@ export class MarketResetComponent implements OnInit {
       JSON.parse(localStorage['query_market_reset']) : undefined;
     this.form = this.formBuilder.group({
       name: query && query.name !== undefined ? query.name : null,
-      costLimit: null,//query && query.costLimit !== undefined ? query.costLimit : null,
-      maxItemCount: null,// query && query.maxItemCount !== undefined ? query.maxItemCount : null,
+      costLimit: query && query.costLimit !== undefined ? query.costLimit : null,
+      maxItemCount:  query && query.maxItemCount !== undefined ? query.maxItemCount : null,
       minimumProfit: query && query.minimumProfit !== undefined ? query.minimumProfit : 30,
       avgDailySold: query && query.avgDailySold !== undefined ? query.avgDailySold : 10,
       saleRate: query && query.saleRate !== undefined ? query.saleRate : 20,
@@ -50,6 +51,7 @@ export class MarketResetComponent implements OnInit {
 
   ngOnInit() {
     this.addColumns();
+    this.hasDefinedAPI = SharedService.user.apiToUse !== 'none';
 
     this.checkInterval = setInterval(() => {
       if (SharedService.auctions.length > 0) {
@@ -164,9 +166,5 @@ export class MarketResetComponent implements OnInit {
       return true;
     }
     return false;
-  }
-
-  hasDefinedAPI(): boolean {
-    return SharedService.user.apiToUse !== 'none';
   }
 }
