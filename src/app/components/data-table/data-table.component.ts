@@ -35,7 +35,7 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
   pageRows: Array<number> = [10, 20, 40, 80, 100];
   pageEvent: PageEvent = { pageIndex: 0, pageSize: this.pageRows[0], length: 0 };
   sorter: Sorter;
-  locale = localStorage['locale'].split('-')[0];
+  locale = localStorage['locale'] ? localStorage['locale'].split('-')[0] : 'en';
   previousLength = 0;
   auctionDuration = {
     'VERY_LONG': '12h+',
