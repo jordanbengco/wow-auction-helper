@@ -49,7 +49,7 @@ export class Auction {
   undercutByAmount?: number;
   roi?: number;
 
-  constructor(auc?:number, item?: number, buyout?: number, quantity?: number, owner?: string, ownerRealm?: string) {
+  constructor(auc?: number, item?: number, buyout?: number, quantity?: number, owner?: string, ownerRealm?: string) {
     this.auc = auc;
     this.item = item;
     this.buyout = buyout;
