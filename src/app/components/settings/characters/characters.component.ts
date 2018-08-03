@@ -97,7 +97,7 @@ export class CharactersComponent implements OnChanges, AfterViewInit {
     Realm.gatherRealms();
 
     if (SharedService.user.region && SharedService.user.realm) {
-      AuctionHandler.organize(SharedService.auctions);
+      AuctionHandler.organize(SharedService.auctionItems);
     }
   }
 
@@ -117,7 +117,7 @@ export class CharactersComponent implements OnChanges, AfterViewInit {
       Crafting.checkForMissingRecipes(this._craftingService);
 
       if (SharedService.user.region && SharedService.user.realm) {
-        AuctionHandler.organize(SharedService.auctions);
+        AuctionHandler.organize(SharedService.auctionItems);
       }
     });
   }
@@ -147,7 +147,7 @@ export class CharactersComponent implements OnChanges, AfterViewInit {
     Realm.gatherRealms();
 
     if (SharedService.user.region && SharedService.user.realm) {
-      AuctionHandler.organize(SharedService.auctions);
+      AuctionHandler.organize(SharedService.auctionItems);
     }
 
     this.angulartics2.eventTrack.next({

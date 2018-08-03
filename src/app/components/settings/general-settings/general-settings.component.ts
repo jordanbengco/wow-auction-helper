@@ -85,7 +85,7 @@ export class GeneralSettingsComponent implements OnInit {
       this.changedLocales = false;
 
       if (!this.changedRealm) {
-        AuctionHandler.organize(SharedService.auctions);
+        AuctionHandler.organize(SharedService.auctionItems);
       }
     }
 

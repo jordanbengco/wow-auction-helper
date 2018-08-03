@@ -204,12 +204,12 @@ export class DownloadComponent implements OnInit {
       case 'wowuction':
         this.downloadProgress = 'Downloading wowuction data';
         await this._auctionsService.getWoWUctionAuctions();
-        AuctionHandler.organize(SharedService.auctions);
+        AuctionHandler.organize(SharedService.auctionItems);
         break;
       case 'tsm':
         this.downloadProgress = 'Downloading TSM data';
         await this._auctionsService.getTsmAuctions();
-        AuctionHandler.organize(SharedService.auctions);
+        AuctionHandler.organize(SharedService.auctionItems);
         break;
       case 'auctions':
         this.downloadProgress = 'Downloading new auctions';
@@ -224,7 +224,7 @@ export class DownloadComponent implements OnInit {
         await this._itemService.getItems();
 
         if (forceUpdate) {
-          AuctionHandler.organize(SharedService.auctions);
+          AuctionHandler.organize(SharedService.auctionItems);
         }
         break;
       case 'pets':
@@ -236,7 +236,7 @@ export class DownloadComponent implements OnInit {
         await this._petService.getPets();
 
         if (forceUpdate) {
-          AuctionHandler.organize(SharedService.auctions);
+          AuctionHandler.organize(SharedService.auctionItems);
         }
         break;
       case 'recipes':
@@ -247,7 +247,7 @@ export class DownloadComponent implements OnInit {
         await this._craftingService.getRecipes();
 
         if (forceUpdate) {
-          AuctionHandler.organize(SharedService.auctions);
+          AuctionHandler.organize(SharedService.auctionItems);
         }
         break;
     }

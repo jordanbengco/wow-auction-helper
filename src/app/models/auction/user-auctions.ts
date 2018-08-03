@@ -1,6 +1,7 @@
 import { Auction } from './auction';
 import { Character } from '../character/character';
 import { AuctionItem } from './auction-item';
+import { SharedService } from '../../services/shared.service';
 
 export class UserAuctions {
   auctions: Array<Auction> = new Array<Auction>();
@@ -11,16 +12,19 @@ export class UserAuctions {
 
   constructor() {}
 
-  addAuction(auction: Auction): void {
+  addAuction(auction: Auction, auctionItem: AuctionItem): void {
     if (this.charactersMap[auction.ownerRealm] && this.charactersMap[auction.ownerRealm][auction.owner]) {
       this.auctionWorth += auction.buyout;
       this.charactersMap[auction.ownerRealm][auction.owner].auctionWorth += auction.buyout;
+      auction.undercutByAmount = auction.buyout / auction.quantity -
+        auctionItem.buyout;
+
       this.auctions.push(auction);
       this.charactersMap[auction.ownerRealm][auction.owner].auctions.push(auction);
     }
   }
 
-  countUndercuttedAuctions(auctionItemsMap: Map<number, AuctionItem>): void {
+  countUndercutAuctions(auctionItemsMap: Map<number, AuctionItem>): void {
     let tmpAuctionItem: AuctionItem;
     this.characters.forEach(c => {
       c.auctions.forEach(a => {

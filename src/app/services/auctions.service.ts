@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material';
 import { WoWUction } from '../models/auction/wowuction';
 import { PetsService } from './pets.service';
 import { Item } from '../models/item/item';
+import { AuctionItem } from '../models/auction/auction-item';
 
 @Injectable()
 export class AuctionsService {
@@ -45,12 +46,12 @@ export class AuctionsService {
     console.log('Downloading auctions');
     SharedService.downloading.auctions = true;
     this.openSnackbar(`Downloading auctions for ${ SharedService.user.realm }`);
-    return this._http.post(Endpoints.getUrl('auction'), { url: SharedService.auctionResponse.url })
+    return this._http.post(Endpoints.getUrl('auction/organized'), { url: SharedService.auctionResponse.url })
       .toPromise()
       .then(a => {
         SharedService.downloading.auctions = false;
         localStorage['timestamp_auctions'] = SharedService.auctionResponse.lastModified;
-        AuctionHandler.organize(a['auctions'], this.petService);
+        AuctionHandler.organize(a as AuctionItem[], this.petService);
         this._dbService.addAuctions(a['auctions']);
 
         // Adding lacking items to the database

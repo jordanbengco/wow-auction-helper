@@ -80,6 +80,7 @@ app.options('/api/pet/:id', petController.patchPet);
 
 app.post('/api/auction', auctionController.getAuctions);
 app.post('/api/auction/wowuction', auctionController.getWoWUction);
+app.post('/api/auction/organized', auctionController.getOrganizedAuctions);
 
 /**
  * Primary app routes.

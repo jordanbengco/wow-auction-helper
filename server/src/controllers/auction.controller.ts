@@ -13,3 +13,8 @@ export const getWoWUction =
   (req: Request, res: Response) => {
     AuctionUtil.getWoWUction(req, res);
   };
+
+export const getOrganizedAuctions =
+  (req: Request, res: Response) => {
+    AuctionUtil.getOrganizedAuctions(req, res);
+  };
