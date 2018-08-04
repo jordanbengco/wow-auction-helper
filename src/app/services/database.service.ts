@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
+import spawn from 'spawn-worker';
 import { Item } from '../models/item/item';
 import { Auction } from '../models/auction/auction';
 import { AuctionHandler } from '../models/auction/auction-handler';
@@ -114,11 +115,47 @@ export class DatabaseService {
 
 
   addAuctions(auctions: Array<Auction>): void {
-    this.db.table('auctions').clear();
-    this.db.table('auctions')
-      .bulkAdd(auctions)
-      .then(r => console.log('Successfully added auctions to local DB'))
-      .catch(e => console.error('Could not add auctions to local DB', e));
+    self['db'] = this.db;
+    const worker: Worker = spawn((val) => {
+      addEventListener('message', (d) => {
+        console.log('test', self['db']);
+        const obj = JSON.parse(d.data);
+        console.log(obj);
+        const openRequest = window.indexedDB.open('wah-db', 40);
+        openRequest.onerror = function(event) {
+            console.error(event);
+        };
+        openRequest.onsuccess = function (event) {
+            const db = openRequest.result;
+            let i = 0;
+            db.onerror = function(evt) {
+                // Generic error handler for all errors targeted at this database's requests
+                console.error(evt.target);
+            };
+            const transaction = db.transaction('auctions', 'readwrite');
+            const itemStore = transaction.objectStore('item');
+            putNext();
+
+            function putNext() {
+                if (i < obj.auctions.length) {
+                    itemStore.put(obj.auctions[i]).onsuccess = putNext;
+                    ++i;
+                } else {   // complete
+                    console.log('populate complete');
+                }
+            }
+        };
+      });
+    });
+
+    worker.postMessage(JSON.stringify({
+      db: this.db,
+      auctions: auctions
+    }));
+
+    worker.onmessage = function(event) {
+      console.log(event.data);
+    };
   }
 
   getAllAuctions(petService?: PetsService): Dexie.Promise<any> {

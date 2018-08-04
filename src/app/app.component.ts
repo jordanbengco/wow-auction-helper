@@ -7,6 +7,7 @@ import { AuctionsService } from './services/auctions.service';
 import { ItemService } from './services/item.service';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { Angulartics2 } from 'angulartics2';
+import spawn from 'spawn-worker';
 
 @Component({
   selector: 'wah-root',

@@ -25,7 +25,8 @@
               "src/scss/styles.scss"
             ],
             "scripts": [
-              "node_modules/distinct-colors/dist/distinct-colors.min.js"
+              "node_modules/distinct-colors/dist/distinct-colors.min.js",
+              "node_modules/spawn-worker/src/index.js"
             ]
           },
           "configurations": {

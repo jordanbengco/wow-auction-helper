@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material';
 import { WoWUction } from '../models/auction/wowuction';
 import { PetsService } from './pets.service';
 import { Item } from '../models/item/item';
+import spawn from 'spawn-worker';
 
 @Injectable()
 export class AuctionsService {
@@ -51,6 +52,7 @@ export class AuctionsService {
         SharedService.downloading.auctions = false;
         localStorage['timestamp_auctions'] = SharedService.auctionResponse.lastModified;
         AuctionHandler.organize(a['auctions'], this.petService);
+
         this._dbService.addAuctions(a['auctions']);
 
         // Adding lacking items to the database
