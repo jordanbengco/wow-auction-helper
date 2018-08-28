@@ -1,3 +1,5 @@
+import {ReputationVendor} from './reputation-vendor.model';
+
 export class ReputationVendors {
     public static standings = [
         {
@@ -34,10 +36,11 @@ export class ReputationVendors {
             points: 0
         }
     ];
-    public static list = [
+    public static list: ReputationVendor[] = [
         {
             id: 2163,
             name: 'Tortollan Seekers',
+            expansion: 7,
             isAlly: true,
             isHorde: true,
             vendors: [
