@@ -23,7 +23,6 @@ export class CraftingComponent implements OnInit, OnDestroy {
   filtered: Array<Recipe> = new Array<Recipe>();
   itemClasses = itemClasses;
   professions = [
-    'First Aid',
     'Blacksmithing',
     'Leatherworking',
     'Alchemy',
