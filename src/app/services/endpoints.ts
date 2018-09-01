@@ -12,11 +12,19 @@ export class Endpoints {
   public static readonly IMAGE_PATH_ICONS = Endpoints.IMAGE_PATH + 'icons/56';
   // char/realm/??/??.jpg
   public static readonly IMAGE_PATH_CHARACTER = Endpoints.IMAGE_PATH + 'character';
+  public static readonly LAMBDAS = {
+    AUCTION_US: 'https://4m6c7drle0.execute-api.us-west-2.amazonaws.com/default/getAuctions'
+  };
   // https://render-eu.worldofwarcraft.com/character/draenor/217/111838681-avatar.jpg
 
   public static getUrl(path: string): string {
+    let url = `/api/${path}`;
+    if (path === 'auction' && SharedService.user.region === 'us') {
+      url = Endpoints.LAMBDAS.AUCTION_US;
+    }
+    console.log('path', url);
     return environment.production ?
-      `/api/${path}` : `${ Endpoints.WAH_LOCAL_API }${ path }`;
+      url : `${ Endpoints.WAH_LOCAL_API }${ path }`;
   }
 
   public static getUndermineUrl(): string {
@@ -33,12 +41,16 @@ export class Endpoints {
   public static getBattleNetApi(query: string, region?: string): string {
     // 'assets/mock/auctions.json'
     return `https://${
-      region ? (region === 'eu' ? 'eu' : 'us') : SharedService.user.region
+      Endpoints.getRegion(region)
       }.api.battle.net/wow/${
         query
       }${
         Endpoints.getBinder(query)
       }apikey=${Keys.blizzard}`;
+  }
+
+  public static getRegion (region: string): string {
+    return region ? (region === 'eu' ? 'eu' : 'us') : SharedService.user.region;
   }
 
   private static getBinder(query: string) {
