@@ -9,6 +9,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { Angulartics2 } from 'angulartics2';
 import { ProspectingAndMillingUtil } from './utils/prospect-milling.util';
 import { environment } from '../environments/environment';
+import { defaultMilling } from './utils/default-milling.util';
 
 @Component({
   selector: 'wah-root',
@@ -51,6 +52,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     User.restore();
     SharedService.user.shoppingCart.restore();
     ProspectingAndMillingUtil.restore();
+
+    console.log(defaultMilling === ProspectingAndMillingUtil.mills);
   }
 
   ngOnInit(): void {
