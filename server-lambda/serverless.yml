@@ -19,3 +19,9 @@ functions:
       - http:
           method: post
           path: auction
+  item:
+    handler: item.handle
+    events:
+      - http:
+          method: any
+          path: item
