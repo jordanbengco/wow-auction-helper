@@ -10,20 +10,20 @@
     "mysql": "^2.16.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
-    "dotenv": "^4.0.0",
+    "dotenv": "^6.0.0",
     "zlib": "^1.0.5"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.1",
-    "@types/node": "^8.0.57",
-    "serverless-offline": "^3.25.8",
-    "serverless-webpack": "^5.1.1",
-    "source-map-support": "^0.5.6",
+    "@types/aws-lambda": "8.10.11",
+    "@types/node": "^10.9.4",
+    "serverless-offline": "^3.25.11",
+    "serverless-webpack": "^5.2.0",
+    "source-map-support": "^0.5.9",
     "ts-loader": "^4.2.0",
-    "typescript": "^2.9.2",
-    "@types/dotenv": "^4.0.2",
+    "typescript": "^3.0.3",
+    "@types/dotenv": "^4.0.3",
     "@types/mysql": "^2.15.5",
-    "webpack": "^4.5.0"
+    "webpack": "^4.17.2"
   },
   "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
   "license": "MIT"
