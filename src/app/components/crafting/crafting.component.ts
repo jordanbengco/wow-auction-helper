@@ -102,7 +102,7 @@ export class CraftingComponent implements OnInit, OnDestroy {
       this.columns.push({ key: 'mktPrice', title: 'Market value', dataType: 'gold', hideOnMobile: true });
     }
 
-    this.columns.push({ key: 'roi', title: 'Profit', dataType: 'gold' });
+    this.columns.push({ key: 'roi', title: 'Profit', dataType: 'gold', customSort: this.sortByROI });
     if (SharedService.user.apiToUse !== 'none') {
       this.columns.push({ key: 'avgDailySold', title: 'Daily sold', dataType: 'number', hideOnMobile: true });
       this.columns.push({ key: 'regionSaleRate', title: 'Sale rate', dataType: 'percent', hideOnMobile: true });
@@ -164,6 +164,9 @@ export class CraftingComponent implements OnInit, OnDestroy {
       this.searchForm.value.profession === recipe.profession || !recipe.profession && this.searchForm.value.profession === 'none';
   }
 
+  sortByROI(crafts: Recipe[]): void {
+    // recipe.forEach();
+  }
 
   /* istanbul ignore next */
   isDarkmode(): boolean {
