@@ -1,13 +1,12 @@
-import { async, TestBed } from '@angular/core/testing';
-import { Sorter } from './sorter';
-import { SharedService } from '../services/shared.service';
-import { AuctionItem } from './auction/auction-item';
+import {SorterUtil} from './sorter.util';
+import {SharedService} from '../services/shared.service';
+import {AuctionItem} from './auction/auction-item';
 
-let sorter: Sorter,
+let sorter: SorterUtil,
   arr = [];
 
 beforeEach(() => {
-  sorter = new Sorter();
+  sorter = new SorterUtil();
   arr = [
     { id: 1, name: 'Arch' },
     { id: 2, name: 'Aisha' },

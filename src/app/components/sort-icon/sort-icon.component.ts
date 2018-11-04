@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Key } from '../../models/sorter';
+import { Key } from '../../models/sorter.util';
 
 @Component({
   selector: 'wah-sort-icon',

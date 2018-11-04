@@ -1,7 +1,6 @@
-import { AuctionItem } from './auction/auction-item';
-import { SharedService } from '../services/shared.service';
+import {SharedService} from '../services/shared.service';
 
-export class Sorter {
+export class SorterUtil {
   readonly auctionDuration = {
     'VERY_LONG': 4,
     'LONG': 3,

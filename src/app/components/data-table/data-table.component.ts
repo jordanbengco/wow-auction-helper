@@ -6,7 +6,7 @@ import { AuctionItem } from '../../models/auction/auction-item';
 import { Auction } from '../../models/auction/auction';
 import { Recipe } from '../../models/crafting/recipe';
 import { User } from '../../models/user/user';
-import { Sorter } from '../../models/sorter';
+import { SorterUtil } from '../../models/sorter.util';
 import { Item } from '../../models/item/item';
 import { Seller } from '../../models/seller';
 import { AuctionPet } from '../../models/auction/auction-pet';
@@ -47,7 +47,7 @@ export class DataTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   searchField: FormControl = new FormControl();
   pageRows: Array<number> = [10, 20, 40, 80, 100];
   pageEvent: PageEvent = { pageIndex: 0, pageSize: this.itemsPerPage, length: 0 };
-  sorter: Sorter;
+  sorter: SorterUtil;
   locale = localStorage['locale'].split('-')[0];
   previousLength = 0;
   auctionDuration = {
@@ -59,7 +59,7 @@ export class DataTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   getBonusList = Auction.getBonusList;
 
   constructor(private angulartics2: Angulartics2) {
-    this.sorter = new Sorter();
+    this.sorter = new SorterUtil();
   }
 
   ngAfterViewInit() {
