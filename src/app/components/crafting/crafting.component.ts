@@ -1,15 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
-import { ColumnDescription } from '../../models/column-description';
-import { Crafting } from '../../models/crafting/crafting';
-import { Recipe } from '../../models/crafting/recipe';
-import { Filters } from '../../models/filtering';
-import { itemClasses } from '../../models/item/item-classes';
-import { User } from '../../models/user/user';
-import { SharedService } from '../../services/shared.service';
-import { GameBuild } from '../../utils/game-build.util';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Title} from '@angular/platform-browser';
+import {Subscription} from 'rxjs';
+import {ColumnDescription, SortFunctionDescription} from '../../models/column-description';
+import {Crafting} from '../../models/crafting/crafting';
+import {Recipe} from '../../models/crafting/recipe';
+import {Filters} from '../../models/filtering';
+import {itemClasses} from '../../models/item/item-classes';
+import {User} from '../../models/user/user';
+import {SharedService} from '../../services/shared.service';
+import {GameBuild} from '../../utils/game-build.util';
+import {Key} from '../../models/sorter.util';
 
 
 @Component({
@@ -24,7 +25,6 @@ export class CraftingComponent implements OnInit, OnDestroy {
   auctionSubscription: Subscription;
   itemClasses = itemClasses;
   professions = [
-    'First Aid',
     'Blacksmithing',
     'Leatherworking',
     'Alchemy',
@@ -41,7 +41,6 @@ export class CraftingComponent implements OnInit, OnDestroy {
   delayFilter = false;
 
   columns: Array<ColumnDescription> = [];
-  sortROIByPercent: any;
 
   constructor(private _formBuilder: FormBuilder, private _title: Title) {
     this._title.setTitle('WAH - Crafting');
@@ -57,7 +56,7 @@ export class CraftingComponent implements OnInit, OnDestroy {
       minSold: query && query.minSold !== null ? parseFloat(query.minSold) : 0,
       intermediate: query && SharedService.user.useIntermediateCrafting !== null ?
         SharedService.user.useIntermediateCrafting : true,
-      itemClass: query  ? query.itemClass : '-1',
+      itemClass: query ? query.itemClass : '-1',
       itemSubClass: query ? query.itemSubClass : '-1',
 
       // Disenchanting
@@ -94,24 +93,26 @@ export class CraftingComponent implements OnInit, OnDestroy {
   }
 
   addColumns(): void {
-    this.columns.push({ key: 'name', title: 'Name', dataType: 'name' });
-    this.columns.push({ key: 'reagents', title: 'Materials', dataType: 'materials', hideOnMobile: true });
-    this.columns.push({ key: 'cost', title: 'Cost', dataType: 'gold', hideOnMobile: true });
-    this.columns.push({ key: 'buyout', title: 'Buyout', dataType: 'gold' });
+    this.columns.push({key: 'name', title: 'Name', dataType: 'name'});
+    this.columns.push({key: 'reagents', title: 'Materials', dataType: 'materials', hideOnMobile: true});
+    this.columns.push({key: 'cost', title: 'Cost', dataType: 'gold', hideOnMobile: true});
+    this.columns.push({key: 'buyout', title: 'Buyout', dataType: 'gold'});
 
     if (SharedService.user.apiToUse !== 'none') {
-      this.columns.push({ key: 'mktPrice', title: 'Market value', dataType: 'gold', hideOnMobile: true });
+      this.columns.push({key: 'mktPrice', title: 'Market value', dataType: 'gold', hideOnMobile: true});
     }
 
-    this.columns.push({ key: 'roi', title: 'Profit', dataType: 'gold', customSort: [
-      {title: 'G', function: undefined, isActive: true},
-      {title: '%', function: this.sortROIByPercent, isActive: false}] });
+    this.columns.push({
+      key: 'roi', title: 'Profit', dataType: 'gold', customSort: [
+        {title: 'G', value: 'g', function: undefined, isActive: true},
+        {title: '%', value: '%', function: this.sortROIByPercent, isActive: false}]
+    });
     if (SharedService.user.apiToUse !== 'none') {
-      this.columns.push({ key: 'avgDailySold', title: 'Daily sold', dataType: 'number', hideOnMobile: true });
-      this.columns.push({ key: 'regionSaleRate', title: 'Sale rate', dataType: 'percent', hideOnMobile: true });
+      this.columns.push({key: 'avgDailySold', title: 'Daily sold', dataType: 'number', hideOnMobile: true});
+      this.columns.push({key: 'regionSaleRate', title: 'Sale rate', dataType: 'percent', hideOnMobile: true});
     }
 
-    this.columns.push({ key: '', title: 'Actions', dataType: 'action', actions: ['buy', 'wowhead', 'item-info'], hideOnMobile: true });
+    this.columns.push({key: '', title: 'Actions', dataType: 'action', actions: ['buy', 'wowhead', 'item-info'], hideOnMobile: true});
   }
 
   filter(): void {
@@ -144,22 +145,22 @@ export class CraftingComponent implements OnInit, OnDestroy {
         .indexOf(this.searchForm.value.searchQuery.toLowerCase()) > -1 ||
       (SharedService.items[recipe.itemID] &&
         SharedService.items[recipe.itemID].name.toLowerCase()
-        .indexOf(this.searchForm.value.searchQuery.toLowerCase()) > -1);
+          .indexOf(this.searchForm.value.searchQuery.toLowerCase()) > -1);
   }
 
   isProfitMatch(recipe: Recipe): boolean {
     return this.searchForm.value.profit === null || this.searchForm.value.profit === 0 ||
-    recipe.buyout > 0 && recipe.cost > 0 && this.searchForm.value.profit <= recipe.roi / recipe.cost * 100;
+      recipe.buyout > 0 && recipe.cost > 0 && this.searchForm.value.profit <= recipe.roi / recipe.cost * 100;
   }
 
   isSaleRateMatch(recipe: Recipe): boolean {
     return this.searchForm.value.demand === null || this.searchForm.value.demand === 0 ||
-    recipe.regionSaleRate >= this.searchForm.value.demand / 100;
+      recipe.regionSaleRate >= this.searchForm.value.demand / 100;
   }
 
   isMinSoldMatch(recipe: Recipe): boolean {
     return this.searchForm.value.minSold === null || this.searchForm.value.minSold === 0 ||
-    this.searchForm.value.minSold <= recipe.avgDailySold;
+      this.searchForm.value.minSold <= recipe.avgDailySold;
   }
 
   isProfessionMatch(recipe: Recipe): boolean {
@@ -167,8 +168,9 @@ export class CraftingComponent implements OnInit, OnDestroy {
       this.searchForm.value.profession === recipe.profession || !recipe.profession && this.searchForm.value.profession === 'none';
   }
 
-  sortROIByGold(crafts: Recipe[]): void {
-    // recipe.forEach();
+
+  sortROIByPercent(crafts: Recipe[], key: Key): void {
+
   }
 
   /* istanbul ignore next */

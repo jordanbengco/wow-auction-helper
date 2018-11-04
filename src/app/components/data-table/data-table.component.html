@@ -12,8 +12,9 @@
         <td (click)="sort(c)" *ngIf="displayColumn(c)">
           <wah-sort-icon [key]="sorter.getKey(c.key)"></wah-sort-icon>
           {{ c.title }}
-          <mat-select matSuffix *ngIf="c.customSort && c.customSort.length > 0">
-            <mat-option *ngFor="let s of c.customSort">
+          <mat-select matSuffix *ngIf="c.customSort && c.customSort.length > 0" (selectionChange)="stuff($event)">
+            <mat-option [ngClass]="{'unicorn-dark-theme': isDarkMode()}"
+                        *ngFor="let s of c.customSort" [value]="s.value">
               {{ s.title }}
             </mat-option>
           </mat-select>

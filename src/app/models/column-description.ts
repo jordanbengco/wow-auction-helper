@@ -10,6 +10,7 @@ export class ColumnDescription {
 
 export interface SortFunctionDescription {
   title: string;
+  value: any;
   function: Function;
   isActive: boolean;
 }
