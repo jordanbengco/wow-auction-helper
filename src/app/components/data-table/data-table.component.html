@@ -12,6 +12,11 @@
         <td (click)="sort(c)" *ngIf="displayColumn(c)">
           <wah-sort-icon [key]="sorter.getKey(c.key)"></wah-sort-icon>
           {{ c.title }}
+          <mat-select matSuffix *ngIf="c.customSort && c.customSort.length > 0">
+            <mat-option *ngFor="let s of c.customSort">
+              {{ s.title }}
+            </mat-option>
+          </mat-select>
         </td>
       </ng-container>
     </tr>

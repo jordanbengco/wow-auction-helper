@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-import { Recipe } from '../../models/crafting/recipe';
-import { SharedService } from '../../services/shared.service';
-import { ColumnDescription } from '../../models/column-description';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { itemClasses } from '../../models/item/item-classes';
-import { Filters } from '../../models/filtering';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { User } from '../../models/user/user';
+import { Subscription } from 'rxjs';
+import { ColumnDescription } from '../../models/column-description';
 import { Crafting } from '../../models/crafting/crafting';
+import { Recipe } from '../../models/crafting/recipe';
+import { Filters } from '../../models/filtering';
+import { itemClasses } from '../../models/item/item-classes';
+import { User } from '../../models/user/user';
+import { SharedService } from '../../services/shared.service';
 import { GameBuild } from '../../utils/game-build.util';
+
 
 @Component({
   selector: 'wah-crafting',
@@ -41,6 +41,7 @@ export class CraftingComponent implements OnInit, OnDestroy {
   delayFilter = false;
 
   columns: Array<ColumnDescription> = [];
+  sortROIByPercent: any;
 
   constructor(private _formBuilder: FormBuilder, private _title: Title) {
     this._title.setTitle('WAH - Crafting');
@@ -102,7 +103,9 @@ export class CraftingComponent implements OnInit, OnDestroy {
       this.columns.push({ key: 'mktPrice', title: 'Market value', dataType: 'gold', hideOnMobile: true });
     }
 
-    this.columns.push({ key: 'roi', title: 'Profit', dataType: 'gold', customSort: this.sortByROI });
+    this.columns.push({ key: 'roi', title: 'Profit', dataType: 'gold', customSort: [
+      {title: 'G', function: undefined, isActive: true},
+      {title: '%', function: this.sortROIByPercent, isActive: false}] });
     if (SharedService.user.apiToUse !== 'none') {
       this.columns.push({ key: 'avgDailySold', title: 'Daily sold', dataType: 'number', hideOnMobile: true });
       this.columns.push({ key: 'regionSaleRate', title: 'Sale rate', dataType: 'percent', hideOnMobile: true });
@@ -164,7 +167,7 @@ export class CraftingComponent implements OnInit, OnDestroy {
       this.searchForm.value.profession === recipe.profession || !recipe.profession && this.searchForm.value.profession === 'none';
   }
 
-  sortByROI(crafts: Recipe[]): void {
+  sortROIByGold(crafts: Recipe[]): void {
     // recipe.forEach();
   }
 

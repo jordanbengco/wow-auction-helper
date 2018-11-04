@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Input, Output, OnChanges, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material';
-import { ColumnDescription } from '../../models/column-description';
+import { ColumnDescription, SortFunctionDescription } from '../../models/column-description';
 import { SharedService } from '../../services/shared.service';
 import { AuctionItem } from '../../models/auction/auction-item';
 import { Auction } from '../../models/auction/auction';
@@ -304,8 +304,16 @@ export class DataTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   sort(column: ColumnDescription): void {
+    let sortFunction: SortFunctionDescription;
+    if (column.customSort) {
+      column.customSort.forEach((fn) => {
+        if (fn.isActive) {
+          sortFunction = fn;
+        }
+      });
+    }
     this.sorter.addKey(column.key, column.dataType === 'gold-per-item');
-    this.sorter.sort(this.filteredData, column.customSort);
+    this.sorter.sort(this.filteredData, sortFunction);
   }
 
   getSource(recipe: Recipe): string {

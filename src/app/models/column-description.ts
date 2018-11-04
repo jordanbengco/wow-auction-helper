@@ -3,7 +3,13 @@ export class ColumnDescription {
   dataType: string;
   key?: string;
   actions?: Array<string>;
-  hideOnMobile? = false;
-  customSort?: Function;
+  hideOnMobile?: boolean;
+  customSort?: SortFunctionDescription[];
   cssClass?: string;
+}
+
+export interface SortFunctionDescription {
+  title: string;
+  function: Function;
+  isActive: boolean;
 }

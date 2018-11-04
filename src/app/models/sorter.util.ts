@@ -1,4 +1,5 @@
 import {SharedService} from '../services/shared.service';
+import { SortFunctionDescription } from './column-description';
 
 export class SorterUtil {
   readonly auctionDuration = {
@@ -21,9 +22,9 @@ export class SorterUtil {
     }
   }
 
-  sort(arr: any[], customSort?: Function): void {
-    if (customSort) {
-      customSort(arr);
+  sort(arr: any[], customSort?: SortFunctionDescription): void {
+    if (customSort && customSort.function) {
+      customSort.function(arr);
       return;
     }
     arr.sort((a, b) => {
