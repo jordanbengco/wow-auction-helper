@@ -349,6 +349,7 @@ export class DataTableComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   stuff(anything) {
+    // TODO: Fix
     console.log('Loggy', anything);
   }
 

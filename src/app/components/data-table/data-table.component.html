@@ -14,7 +14,7 @@
           {{ c.title }}
           <mat-select matSuffix *ngIf="c.customSort && c.customSort.length > 0" (selectionChange)="stuff($event)">
             <mat-option [ngClass]="{'unicorn-dark-theme': isDarkMode()}"
-                        *ngFor="let s of c.customSort" [value]="s.value">
+                        *ngFor="let s of c.customSort" [value]="s">
               {{ s.title }}
             </mat-option>
           </mat-select>
