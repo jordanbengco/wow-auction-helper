@@ -38,15 +38,17 @@ export class Endpoints {
       Endpoints.getRealm().slug}/`;
   }
 
-  private static getRealm() {
-    return SharedService.realms[SharedService.user.realm];
+  private static getRealm(slug?: string) {
+    const fromSlug = SharedService.realms[slug],
+      currentRealm = SharedService.realms[SharedService.user.realm];
+    return fromSlug || currentRealm;
   }
 
 // http://localhost:3000/api/auction?
-  public static getBattleNetApi(query: string, region?: string, dontUseUserLocale?: boolean): string {
+  public static getBattleNetApi(query: string, region?: string, dontUseUserLocale?: boolean, realmSlug?: string): string {
     // 'assets/mock/auctions.json'
     const localeString = dontUseUserLocale ?
-      '' : `&locale=${Endpoints.getRealm().locale}`;
+      '' : `&locale=${Endpoints.getRealm(realmSlug).locale}`;
 
     return `https://${
       Endpoints.getRegion(region)
