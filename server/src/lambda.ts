@@ -2,6 +2,16 @@ const awsServerlessExpress = require('aws-serverless-express');
 const app = require('./app');
 const server = awsServerlessExpress.createServer(app);
 
-exports.handler = (event, context) => {
+const binaryMimeTypes = [
+  'application/octet-stream',
+  'font/eot',
+  'font/opentype',
+  'font/otf',
+  'image/jpeg',
+  'image/png',
+  'image/svg+xml'
+];
+server
+  .createServer(app, null, binaryMimeTypes);
+exports.handler = (event, context) =>
   awsServerlessExpress.proxy(server, event, context);
-};
