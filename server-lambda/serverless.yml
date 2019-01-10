@@ -19,3 +19,15 @@ functions:
       - http:
           method: post
           path: auction
+  item:
+    handler: item.handler
+    events:
+      - http:
+          method: any
+          path: item
+  item-child:
+    handler: item.handler
+    events:
+      - http:
+          method: any
+          path: item/*
