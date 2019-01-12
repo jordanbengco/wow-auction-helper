@@ -76,7 +76,6 @@ export class DashboardGroupManagerComponent implements AfterContentInit {
   }
 
   save(group): void {
-    // group.items = checked;
     SharedService.user.watchlist.save();
   }
 
