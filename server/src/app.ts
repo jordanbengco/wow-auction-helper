@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import compression from 'compression'; // compresses requests
 import bodyParser from 'body-parser';
 import lusca from 'lusca';
@@ -90,6 +90,15 @@ app.post('/api/character', characterController.postCharacter);
 
 // Realm status
 app.get('/api/realm/:region', getRealmStatus);
+
+
+app.get('/api/test', (req: Request, res: Response) => {
+  res.send({n: 'asd', method: req.method, accepted: req.accepted, params: req.params, query: req.query, env: process.env});
+});
+
+app.post('/api/test', (req: Request, res: Response) => {
+  res.send({n: 'asd', method: req.method, accepted: req.accepted, params: req.params, query: req.query, env: process.env});
+});
 
 /**
  * Primary app routes.
